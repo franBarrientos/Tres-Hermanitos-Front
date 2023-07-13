@@ -17,23 +17,45 @@ export default function Resumen() {
       display={"flex"}
       flexDirection={"column"}
       alignItems={"center"}
+      bg={"ly.900"}
+      color={"ly.700"}
     >
-      <Text fontSize={"2xl"} textAlign={"center"} fontWeight={"bold"} mb={10}>
-        Shopping cart
-      </Text>
+      <Box
+        boxShadow="0px 4px 10px rgba(254, 189, 87, 0.5)"
+        display="inline-block"
+        rounded={"2xl"}
+        p={2}
+        mb={5}
+      >
+        <Text fontSize={"4xl"} fontWeight={"bold"}>
+          🛒 Carrito
+        </Text>
+      </Box>
       {carrito!.length == 0 ? (
-        <Text fontSize={"xl"} textAlign={"center"} fontWeight={"semibold"}>
-          Add something to the cart
+        <Text
+          fontSize={"xl"}
+          textAlign={"center"}
+          fontWeight={"semibold"}
+          my={3}
+        >
+          Agregue algo al carrito
         </Text>
       ) : (
         <Box>
           {carrito?.map((product) => (
             <ProductResumen product={product} key={product.id} />
           ))}
-          <Text mt={8} fontSize={"2xl"} fontWeight={"bold"}>
-            💶Total: ${totalCarrito()}
+          <Text
+            mt={8}
+            fontSize={"2xl"}
+            fontWeight={"bold"}
+            textAlign={"center"}
+          >
+            💵 Total: ${totalCarrito()}
           </Text>
-          <PayButton />
+          <Box display={"flex"} justifyContent={"center"}>
+            <PayButton />
+          </Box>
         </Box>
       )}
     </Box>

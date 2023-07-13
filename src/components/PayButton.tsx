@@ -15,6 +15,7 @@ import {
   Input,
   useToast,
   Img,
+  Text,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import useApp from "../hook/useApp";
@@ -80,7 +81,7 @@ export default function PayButton() {
       }
     } else {
       toast({
-        title: "Invalid Values .",
+        title: "Valores Incorrectos .",
         status: "error",
         duration: 1000,
         position: "top-left",
@@ -118,7 +119,7 @@ export default function PayButton() {
         fontWeight={"semibold"}
         variant="outline"
       >
-        Pay
+        Pagar
       </Button>
       <AlertDialog
         leastDestructiveRef={cancelRef}
@@ -130,9 +131,9 @@ export default function PayButton() {
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>You must Log in to buy</AlertDialogHeader>
+          <AlertDialogHeader>Inicia Sesion Para Comprar</AlertDialogHeader>
           <AlertDialogCloseButton />
-          <AlertDialogBody>To buy something log in before</AlertDialogBody>
+          <AlertDialogBody>Para comprar inicia sesion antes</AlertDialogBody>
           <AlertDialogFooter>
             <Button onClick={onClose}>No</Button>
             <Button
@@ -140,7 +141,7 @@ export default function PayButton() {
               colorScheme="blue"
               ml={3}
             >
-              Log In
+              Iniciar Sesion
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -156,16 +157,16 @@ export default function PayButton() {
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>You must insert these data</AlertDialogHeader>
+          <AlertDialogHeader>Ingresa los siguientes Datos</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl>
-                <FormLabel>Addres</FormLabel>
+                <FormLabel>Direccion</FormLabel>
                 <Input
                   {...register("addres")}
                   type="text"
-                  placeholder="Your addres"
+                  placeholder="Tu direccion"
                   focusBorderColor="gray.600"
                   borderColor={"whiteAlpha.300"}
                   shadow={"xl"}
@@ -177,7 +178,7 @@ export default function PayButton() {
                 <Input
                   {...register("dni")}
                   type="number"
-                  placeholder="Your dni"
+                  placeholder="Tu dni"
                   focusBorderColor="gray.600"
                   borderColor={"whiteAlpha.300"}
                   shadow={"xl"}
@@ -186,7 +187,7 @@ export default function PayButton() {
               </FormControl>
               <FormControl mt={4}>
                 <FormControl mb={6}>
-                  <FormLabel>Payment</FormLabel>
+                  <FormLabel>Metodo de Pago</FormLabel>
                   <Flex gap={2} alignItems={"center"}>
                     <Button
                       type="button"
@@ -196,10 +197,12 @@ export default function PayButton() {
                     >
                       <Img
                         rounded={"xl"}
-                        w={"48"}
-                        h={9}
-                        src="/mercadopago.jpg"
+                        w={45}
+                        h={38}
+                        src="https://play-lh.googleusercontent.com/YCT9pYI8KOkOuvVtAkB8103BektOn973BW-t4srwhSMbpj0HUVQf10hVusFpmTTbHg"
                       ></Img>
+
+                      <Text ml={3}> Mercado Pago</Text>
                     </Button>
 
                     <Button
@@ -208,7 +211,7 @@ export default function PayButton() {
                       colorScheme={payment === "CASH" ? "blue" : "gray"}
                       onClick={() => setPayment("CASH")}
                     >
-                      💵 CASH
+                      💵 Efectivo
                     </Button>
                   </Flex>
                 </FormControl>
@@ -218,9 +221,14 @@ export default function PayButton() {
                   <CircularProgress isIndeterminate color="green.300" />
                 </Flex>
               ) : (
-                <Button type="submit" mt={6} colorScheme="blue" width={"full"}>
-                  Save
+                <Flex gap={2}>
+                <Button type="submit"  colorScheme="blue" width={"full"}>
+                  Confirmar
                 </Button>
+                   <Button colorScheme="red" onClick={onClose1}>
+                   Cerrar
+                 </Button>
+                 </Flex>
               )}
             </form>
           </AlertDialogBody>
@@ -236,12 +244,12 @@ export default function PayButton() {
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>You must insert these data</AlertDialogHeader>
+          <AlertDialogHeader>Ingresa los siguientes Datos</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
             <form onSubmit={handleSubmit(onSubmitPayment)}>
               <FormControl mb={6}>
-                <FormLabel>Payment</FormLabel>
+                <FormLabel>Metodo de Pago</FormLabel>
                 <Flex gap={2} alignItems={"center"}>
                   <Button
                     type="button"
@@ -251,10 +259,12 @@ export default function PayButton() {
                   >
                     <Img
                       rounded={"xl"}
-                      w={"48"}
-                      h={9}
-                      src="/mercadopago.jpg"
+                      w={45}
+                      h={38}
+                      src="https://play-lh.googleusercontent.com/YCT9pYI8KOkOuvVtAkB8103BektOn973BW-t4srwhSMbpj0HUVQf10hVusFpmTTbHg"
                     ></Img>
+
+                    <Text ml={3}> Mercado Pago</Text>
                   </Button>
 
                   <Button
@@ -263,7 +273,7 @@ export default function PayButton() {
                     colorScheme={payment === "CASH" ? "blue" : "gray"}
                     onClick={() => setPayment("CASH")}
                   >
-                    💵 CASH
+                    💵 Efectivo
                   </Button>
                 </Flex>
               </FormControl>
@@ -273,9 +283,14 @@ export default function PayButton() {
                   <CircularProgress isIndeterminate color="green.300" />
                 </Flex>
               ) : (
-                <Button type="submit" mt={6} colorScheme="blue" width={"full"}>
-                  Confirm Purchase
-                </Button>
+                <Flex alignItems={"center"} gap={3}>
+                  <Button type="submit" colorScheme="blue" width={"full"}>
+                    Confirmar
+                  </Button>
+                  <Button colorScheme="red" onClick={onClose2}>
+                    Cerrar
+                  </Button>
+                </Flex>
               )}
             </form>
           </AlertDialogBody>

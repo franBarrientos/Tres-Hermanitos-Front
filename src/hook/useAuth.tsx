@@ -11,46 +11,50 @@ export const useAuth = () => {
   const login = async (
     formData: any,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>> | null,
-    googleSignIn:AxiosResponse<any, any> | null = null
+    googleSignIn: AxiosResponse<any, any> | null = null
   ) => {
     try {
-      setFlatFetch(false)
-      let response = googleSignIn? googleSignIn : (await apiClient.post("/login", formData));
+      setFlatFetch(false);
+      let response = googleSignIn
+        ? googleSignIn
+        : await apiClient.post("/login", formData);
       const { data } = response;
-      if(!data.ok) throw new Error("err")
+      if (!data.ok) throw new Error("err");
       if (data.body.user.role == "USER") {
         toast({
-          title: `Welcome ${data.body.user.firstName}`,
-          description: "Logued succesfully",
+          title: `Bienvenido ${data.body.user.firstName}!!`,
+          description: "Inicio de sesion exitoso",
           status: "success",
           duration: 2000,
           position: "top-left",
           isClosable: true,
         });
         localStorage.setItem("token", data.body.token);
+        localStorage.setItem("user", JSON.stringify(data.body.user));
         setUser(data.body.user);
-        if(setIsLoading) setIsLoading(false);
+        if (setIsLoading) setIsLoading(false);
         navigate("/");
-      }else{
+      } else {
         toast({
-          title: `Welcome ${data.body.user.firstName}`,
-          description: "Logued succesfully",
+          title: `Bienvenido ${data.body.user.firstName}`,
+          description: "Inicio de sesion exitoso",
           status: "success",
           duration: 2000,
           position: "top-left",
           isClosable: true,
         });
         localStorage.setItem("token", data.body.token);
+        localStorage.setItem("user", JSON.stringify(data.body.user));
         setUser(data.body.user);
-        if(setIsLoading) setIsLoading(false);
+        if (setIsLoading) setIsLoading(false);
         navigate("/admin");
       }
     } catch (error) {
       console.log(error);
-      if(setIsLoading) setIsLoading(false);
+      if (setIsLoading) setIsLoading(false);
       toast({
-        title: "Invalid Values.",
-        description: "Please insert correct values",
+        title: "Valores Incorrecto.",
+        description: "Por favor ingrese valores validos",
         status: "error",
         position: "top-left",
         duration: 2000,
@@ -61,12 +65,13 @@ export const useAuth = () => {
 
   const logout = () => {
     setUser(null);
-    setFlatFetch(false)
+    setFlatFetch(false);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/");
     toast({
-      title: `Closed session`,
-      description: "Come back soon",
+      title: `Sesion cerrada`,
+      description: "Vuelve Pronto!",
       status: "warning",
       duration: 2000,
       position: "top-left",
@@ -79,19 +84,23 @@ export const useAuth = () => {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     try {
-      setFlatFetch(false)
-      const response = await apiClient.post("/users", {...formData, role:"USER"});
+      setFlatFetch(false);
+      const response = await apiClient.post("/users", {
+        ...formData,
+        role: "USER",
+      });
       const { data } = response;
       if (data.ok == true) {
         toast({
-          title: `Welcome ${data.body.user.firstName}`,
-          description: "Logued succesfully",
+          title: `Bienvenido ${data.body.user.firstName}`,
+          description: "Inicio de sesion exitoso",
           status: "success",
           duration: 2000,
           position: "top-left",
           isClosable: true,
         });
         localStorage.setItem("token", data.body.token);
+        localStorage.setItem("user", data.body.user);
         setUser(data.body.user);
         setIsLoading(false);
         navigate("/");
@@ -100,8 +109,8 @@ export const useAuth = () => {
       console.log(error);
       setIsLoading(false);
       toast({
-        title: "Invalid Values.",
-        description: "Please insert correct values",
+        title: "Valores Incorrecto.",
+        description: "Por favor ingrese valores validos",
         status: "error",
         position: "top-left",
         duration: 2000,

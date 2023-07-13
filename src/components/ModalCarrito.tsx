@@ -7,6 +7,7 @@ import {
   ModalFooter,
   Button,
   Text,
+  Box
 } from "@chakra-ui/react";
 import useApp from "../hook/useApp";
 import ProductResumen from "./ProductResumen";
@@ -28,20 +29,31 @@ export default function ModalCarrito() {
   return (
     <Modal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bg={"ly.800"}>
         <ModalCloseButton />
         <ModalBody my={4}>
-          <Text
+          {/* <Text
             fontSize={"2xl"}
             textAlign={"center"}
             fontWeight={"bold"}
             mb={10}
           >
-            Shopping cart
-          </Text>
+            Carrito
+          </Text> */}
+          <Box
+            boxShadow="0px 4px 10px rgba(254, 189, 87, 0.5)"
+            display="inline-block"
+            rounded={"2xl"}
+            p={2}
+            mb={5}
+          >
+            <Text fontSize={"4xl"} fontWeight={"bold"} color={"ly.700"}>
+              🛒 Carrito
+            </Text>
+          </Box>
           {carrito!.length == 0 ? (
-            <Text fontSize={"xl"} textAlign={"center"} fontWeight={"semibold"}>
-              Add something to the cart
+            <Text fontSize={"xl"} textAlign={"center"} fontWeight={"semibold"} color={"ly.700"}>
+              Añade algo al carrito
             </Text>
           ) : (
             carrito?.map((product) => (
@@ -51,9 +63,16 @@ export default function ModalCarrito() {
         </ModalBody>
 
         {carrito!.length > 0 && (
-          <Text textAlign={"center"} mt={8} fontSize={"2xl"} fontWeight={"bold"}>
-            Total: ${totalCarrito()}
-          </Text>
+           <Text
+           mt={8}
+           fontSize={"2xl"}
+           fontWeight={"bold"}
+           textAlign={"center"}
+           color={"ly.400"}
+         >
+           💵 Total: ${totalCarrito()}
+         </Text>
+          
         )}
 
         <ModalFooter>
@@ -62,11 +81,9 @@ export default function ModalCarrito() {
             mr={3}
             onClick={() => setIsOpenModal(false)}
           >
-            Close
+            Cerrar
           </Button>
-          {carrito!.length > 0 && (
-            <PayButton />
-          )}
+          {carrito!.length > 0 && <PayButton />}
         </ModalFooter>
       </ModalContent>
     </Modal>

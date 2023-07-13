@@ -27,6 +27,7 @@ export default function ModalHistory() {
       );
       setPurchases(data.body);
     } catch (error) {
+      setOpenHistory(false);
       console.log(error);
     }
   };
@@ -35,7 +36,6 @@ export default function ModalHistory() {
     setFlatFetch(true);
   }
 
-  
   return !purchases && openHistory ? (
     <Flex mt={4} justifyContent={"center"} alignItems={"center"}>
       <CircularProgress isIndeterminate color="green.300" />
@@ -44,22 +44,22 @@ export default function ModalHistory() {
     <>
       <Modal isOpen={openHistory} onClose={() => setOpenHistory(false)}>
         <ModalOverlay />
-        <ModalContent maxH={"90%"} overflowY={"scroll"}>
-          <ModalHeader>🛍 Purchases</ModalHeader>
+        <ModalContent maxH={"90%"} overflowY={"scroll"} bg={"ly.900"} color={"ly.700"}>
+          <ModalHeader>🛍 Compras 🛍</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {purchases?.map((purchase) => {
-              return <CardHistory key={purchase.id} {...purchase} />;
+              return <CardHistory  key={purchase.id} {...purchase}  />;
             })}
           </ModalBody>
 
           <ModalFooter>
             <Button
-              colorScheme="blue"
+              colorScheme="red"
               mr={3}
               onClick={() => setOpenHistory(false)}
             >
-              Close
+              Cerrar
             </Button>
           </ModalFooter>
         </ModalContent>

@@ -14,6 +14,7 @@ import { useToast } from "@chakra-ui/react";
 import { getAllCategories } from "../api/category.api";
 import { createOrderMp, createPurchase } from "../api/purchase.api";
 import { createPurchasesProducts } from "../api/purchaseProduct";
+import { Navigate } from "react-router-dom";
 interface MyContextType {
   categories: CategoryInterface[] | null;
   setCategories: Dispatch<SetStateAction<CategoryInterface[] | null>>;
@@ -48,22 +49,22 @@ const categoriesAdmin: CategoryInterface[] = [
   {
     id: 1,
     img: "https://res.cloudinary.com/dacgvqpeg/image/upload/v1688648111/3309960_synkq9.png",
-    name: "Stadistics",
+    name: "Estadisticas",
   },
   {
     id: 2,
-    img: "https://res.cloudinary.com/dacgvqpeg/image/upload/v1688004054/mouse-gamer-logitech-g-pro-gaming-con-cable-luz-led-rgb-12000-dpi_qobn5p.jpg",
-    name: "Products",
+    img: "https://www.damiancolombo.com/assets/images/productos/version/AYG0062BIG1.webp",
+    name: "Productos",
   },
   {
     id: 3,
     img: "https://res.cloudinary.com/dacgvqpeg/image/upload/v1688648259/images_ffrrid.jpg",
-    name: "Categories",
+    name: "Categorias",
   },
   {
     id: 4,
     img: "https://res.cloudinary.com/dacgvqpeg/image/upload/v1688648341/images_vs2byy.png",
-    name: "Purchases",
+    name: "Ventas",
   },
 ];
 
@@ -109,6 +110,20 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     fetchCategories();
   }, [changeCategory]);
 
+  useEffect(() => {
+    const userStringify = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+    if (!userStringify) return;
+    if (!token) return;
+    const user: UserDto | null = JSON.parse(userStringify);
+    setUser(user);
+    if (user && user.role == "ADMIN") {
+      <Navigate to={"/admin"} />;
+    } else {
+      <Navigate to={"/"} />;
+    }
+  }, []);
+
   const handleClickCategory = (id: number) => {
     const category = categories?.filter((category) => category.id == id)[0];
     setActualCategory(category!);
@@ -121,19 +136,19 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
       );
       setCarrito(carritoActualizado);
       toast({
-        title: `Changes saved successfuly`,
+        title: `Cantidad Editada Correctamente`,
         status: "success",
-        duration: 2000,
+        duration: 1500,
         position: "top-left",
         isClosable: true,
       });
     } else {
       setCarrito([...carrito, product]);
       toast({
-        title: `${product.name} Added to Shopping Cart`,
+        title: `${product.name} Añadido al Carrito`,
         description: "Added succesfully",
         status: "success",
-        duration: 2000,
+        duration: 1500,
         position: "top-left",
         isClosable: true,
       });
@@ -160,16 +175,15 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   const handleRemoveProductFromCarrito = (id: number) => {
     setCarrito(carrito.filter((product) => product.id != id));
     toast({
-      title: `removed from Shopping Cart`,
-      description: "Removed succesfully",
+      title: `Quitado del Carrito`,
       status: "warning",
-      duration: 2000,
+      duration: 1500,
       position: "top-left",
       isClosable: true,
     });
   };
 
-  const payMercadoPago = async (idPurchase:number) => {
+  const payMercadoPago = async (idPurchase: number) => {
     const response = await createOrderMp(carrito, idPurchase);
     window.location.replace(response.data.body.urlMercadoPago);
   };
@@ -197,10 +211,10 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           .then(() => {
             setCarrito([]);
             toast({
-              title: "Purchase success",
-              description: "Enjoy your purchase",
+              title: "Compra Exitosa",
+              description: "Disfruta tu compra",
               status: "success",
-              duration: 2000,
+              duration: 1500,
               isClosable: true,
             });
             setIsOpenModal(false);
@@ -211,18 +225,18 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           });
       } catch (error) {
         toast({
-          title: "Error from server",
+          title: "Error de server",
           status: "error",
-          duration: 2000,
+          duration: 1500,
           isClosable: true,
         });
         return;
       }
     } else {
       toast({
-        title: "Log in to buy",
+        title: "Inicia sesion y añade pedidos para comprar",
         status: "error",
-        duration: 2000,
+        duration: 1500,
         isClosable: true,
       });
     }

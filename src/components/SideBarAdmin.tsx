@@ -26,19 +26,20 @@ export default function SideBarAdmin() {
       {isMobile ? (
         <>
           <Flex justifyContent={"space-evenly"} alignItems={"flex-start"}>
-            <Img src="logo.PNG" alt="logo svg" w={"44"} />
+            <Img src="logo.jpeg" alt="logo svg" w={"44"} />
 
             <Flex flexDirection={"column"} alignItems={"flex-start"} mb={2}>
               <Text
                 fontSize={["2xl", "3xl"]}
-                color={"gray.600"}
+                color={"ly.700"}
                 fontWeight="bold"
                 textAlign={"center"}
                 mt={2}
                 ml={1}
                 mb={1}
+                
               >
-                Hello!{" "}
+                Hola!{" "}
                 <Text
                   fontWeight={"bold"}
                   display={"inline"}
@@ -76,16 +77,17 @@ export default function SideBarAdmin() {
         </>
       ) : (
         <>
-          <Img src="logo.PNG" alt="logo svg" w={["40", "60", "80"]} />
+          <Img src="logo.jpeg" alt="logo svg" w={["40", "60", "80"]} />
           <Text
             bgClip="text"
             fontSize={["2xl", "3xl"]}
-            color={"gray.600"}
+            color={"ly.700"}
+
             fontWeight="semibold"
             textAlign={"center"}
             mb={4}
           >
-            Hello!{" "}
+            Hola!{" "}
             <Text fontWeight={"bold"} display={"inline"} color={"orange.400"}>
               {user?.firstName?.toUpperCase()}
             </Text>
@@ -112,7 +114,7 @@ export default function SideBarAdmin() {
               setIsLoadingLogout(false);
             }}
           >
-            Logout
+            Cerrar Sesion
           </Button>
         </>
       )}

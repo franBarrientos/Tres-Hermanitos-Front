@@ -18,7 +18,8 @@ import ModalCarrito from "./ModalCarrito";
 import { useAuth } from "../hook/useAuth";
 import { useNavigate } from "react-router-dom";
 export default function Sidebar() {
-  const { categories, setIsOpenModal, user, setOpenHistory } = useApp();
+  const { categories, setIsOpenModal, user, setOpenHistory, carrito } =
+    useApp();
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const { logout } = useAuth();
@@ -28,38 +29,43 @@ export default function Sidebar() {
       display={"flex"}
       flexDirection={"column"}
       w={["full", "full", "60", "72"]}
+      bg={"ly.900"}
     >
       {isMobile ? (
         <>
           <ModalCarrito />
           <Flex justifyContent={"space-evenly"} alignItems={"flex-start"}>
-            <Img src="logo.PNG" alt="logo svg" w={"44"} />
+            <Img src="logo.jpeg" alt="logo svg" w={"44"} />
 
             <Flex flexDirection={"column"} alignItems={"flex-start"} mb={2}>
               <Text
                 fontSize={["2xl", "3xl"]}
-                color={"gray.600"}
+                color={"ly.700"}
                 fontWeight="bold"
                 textAlign={"center"}
                 mt={2}
                 ml={1}
                 mb={1}
               >
-                Hello!{" "}
-                <Text
-                  fontWeight={"bold"}
-                  display={"inline"}
-                  color={"orange.400"}
-                >
-                  {user?.firstName?.toUpperCase()}
-                </Text>
+                Hola!{" "}
+              </Text>
+              <Text
+                fontWeight={"bold"}
+                display={"inline"}
+                fontSize={["xl", "2xl"]}
+                color={"orange.400"}
+              >
+                {user?.firstName?.toUpperCase()}
               </Text>
 
-              <Flex w={"full"} justifyContent={"space-between"} my={2} gap={5}>
+              <Flex w={"full"} my={2} gap={5}>
                 <Box>
                   <Menu>
-                    <MenuButton as={Button}>
-                      <Img src="me.svg" w={6}></Img>
+                    <MenuButton as={Button} bg={"ly.400"}>
+                      <Flex gap={1}>
+                        <Text fontSize={"xl"}>Yo</Text>
+                        <Img src="me.svg" w={6}></Img>
+                      </Flex>
                     </MenuButton>
                     <MenuList>
                       {user ? (
@@ -73,7 +79,7 @@ export default function Sidebar() {
                               logout();
                             }}
                           >
-                            Logout
+                            Cerrar Sesion
                           </MenuItem>
                           {user.customer && (
                             <MenuItem
@@ -85,7 +91,7 @@ export default function Sidebar() {
                                 setOpenHistory(true);
                               }}
                             >
-                              History
+                              Historial de Compras
                             </MenuItem>
                           )}
                         </>
@@ -99,19 +105,37 @@ export default function Sidebar() {
                             navigate("/auth/login");
                           }}
                         >
-                          Login
+                          Iniciar Sesion
                         </MenuItem>
                       )}
                     </MenuList>
                   </Menu>
                 </Box>
 
-                <Img
-                  onClick={() => setIsOpenModal(true)}
-                  src="shopping.svg"
-                  w={"8"}
-                  my={0}
-                ></Img>
+                <Box
+                  animation={
+                    carrito!.length > 0
+                      ? "breathing 2s ease-in-out infinite"
+                      : ""
+                  }
+                  css={{
+                    "@keyframes breathing": {
+                      "0%": { transform: "scale(1)" },
+                      "50%": { transform: "scale(1.2)" },
+                      "100%": { transform: "scale(1)" },
+                    },
+                  }}
+                >
+                  <Button
+                    onClick={() => setIsOpenModal(true)}
+                    my={0}
+                    fontSize={"xl"}
+                    fontWeight={"bold"}
+                    bg={"ly.700"}
+                  >
+                    🛒
+                  </Button>
+                </Box>
               </Flex>
 
               <MenuMobile />
@@ -120,16 +144,16 @@ export default function Sidebar() {
         </>
       ) : (
         <>
-          <Img src="logo.PNG" alt="logo svg" w={["40", "60", "80"]} />
+          <Img src="logo.jpeg" alt="logo svg" w={["40", "60", "80"]} />
           <Text
             bgClip="text"
             fontSize={["2xl", "3xl"]}
-            color={"gray.600"}
+            color={"ly.700"}
             fontWeight="semibold"
             textAlign={"center"}
             mb={4}
           >
-            Hello!{" "}
+            Hola!{" "}
             <Text fontWeight={"bold"} display={"inline"} color={"orange.400"}>
               {user?.firstName?.toUpperCase()}
             </Text>
@@ -154,18 +178,18 @@ export default function Sidebar() {
                   setIsLoadingLogout(false);
                 }}
               >
-                Logout
+                Cerrar Sesion
               </Button>
               {user.customer && (
                 <Button
-                colorScheme="blue"
-                rounded={"none"}
-                fontSize={"lg"}
+                  colorScheme="blue"
+                  rounded={"none"}
+                  fontSize={"lg"}
                   onClick={() => {
                     setOpenHistory(true);
                   }}
                 >
-                  History
+                 🛍 Historial de Compras
                 </Button>
               )}
             </>
@@ -180,7 +204,7 @@ export default function Sidebar() {
                 navigate("/auth/login");
               }}
             >
-              Login
+              Iniciar Sesion
             </Button>
           )}
         </>

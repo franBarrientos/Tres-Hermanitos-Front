@@ -102,10 +102,12 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
     <Card
       direction={{ base: "column", sm: "row" }}
       overflow="hidden"
-      variant="outline"
       display={"flex"}
       justifyContent={"center"}
       maxWidth={"96"}
+      boxShadow="2px 6px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
+      bg={"ly.900"}
+      color={"ly.700"}
     >
       <Image
         objectFit="cover"
@@ -123,14 +125,14 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
           <Stack direction={"column"} spacing={2}>
             <Button
               onClick={() => onOpen1()}
-              variant="ghost"
+              variant="solid"
               colorScheme="blue"
               shadow={"xl"}
             >
-              Edit
+              Editar
             </Button>
-            <Button variant="ghost" colorScheme="red" shadow={"xl"}>
-              Delete
+            <Button variant="solid" colorScheme="red" shadow={"xl"}>
+              Eliminar
             </Button>
           </Stack>
         </CardFooter>
@@ -186,11 +188,11 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
                 colorScheme="blue"
                 width={"full"}
               >
-                Save changes
+                Guardar Cambios
               </Button>
             )}
             <Button colorScheme="red" ml={1} onClick={onClose1}>
-              Close
+              Cerrar
             </Button>
           </ModalFooter>
         </ModalContent>

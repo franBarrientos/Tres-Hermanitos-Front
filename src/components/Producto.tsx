@@ -34,7 +34,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
 } from "@chakra-ui/react";
 import { ProductInterface } from "../interfaces/product";
 import useApp from "../hook/useApp";
@@ -48,7 +47,7 @@ type productoProp = {
 };
 
 export default function Producto({ producto, isAdmin = false }: productoProp) {
-  const { handleAddToCarrito, categories } = useApp();
+  const { handleAddToCarrito } = useApp();
   const [quantity, setQuantity] = useState(1);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -87,9 +86,13 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
     if (formData.price) formData.price = Number(formData.price);
     if (formData.category) formData.category = Number(formData.category);
     try {
-      const response = await apiClient.put(`/product/${producto.id}`, formData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await apiClient.put(
+        `/product/${producto.id}`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       if (!response.data.ok) throw new Error("err");
       toast({
         title: "Changes Saved Successfuly",
@@ -98,7 +101,7 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
         position: "top-left",
         isClosable: true,
       });
-      onClose1()
+      onClose1();
       setIsLoading(false);
       return;
     } catch (error) {
@@ -116,13 +119,17 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
   };
 
   return (
-    <Card maxW="sm">
-      <CardBody>
+    <Card
+      maxW="sm"
+      boxShadow="2px 6px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
+      bg={"ly.900"}
+    >
+      <CardBody color={"ly.400"}>
         <Image src={producto.img} borderRadius="lg" />
         <Stack mt="6" spacing="3">
           <Heading size="md">{producto.name}</Heading>
           <Text>{producto.description}</Text>
-          <Text color="blue.600" fontSize="2xl">
+          <Text color="ly.700" fontSize="2xl">
             ${producto.price}
           </Text>
         </Stack>
@@ -138,30 +145,32 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
           >
             <Button
               onClick={() => onOpen1()}
-              variant="ghost"
+              variant="solid"
               colorScheme="blue"
               shadow={"xl"}
             >
-              Edit
+              Editar
             </Button>
             <Button
               onClick={() => onOpen()}
-              variant="ghost"
+              variant="solid"
               colorScheme="red"
               shadow={"xl"}
             >
-              Delete
+              Eliminar
             </Button>
           </Flex>
         ) : (
           <Flex
-            justifyContent={"center"}
+            justifyContent={"space-evenly"}
             alignItems={"center"}
-            gap={2}
+            w={"full"}
             direction={{ base: "row", md: "column", xl: "row" }}
           >
             <NumberInput
               size="lg"
+              color={"ly.400"}
+              bg={"ly.800"}
               maxW={20}
               min={1}
               value={quantity}
@@ -169,17 +178,17 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
             >
               <NumberInputField />
               <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
+                <NumberIncrementStepper color={"ly.400"} />
+                <NumberDecrementStepper color={"ly.400"} />
               </NumberInputStepper>
             </NumberInput>
             <Button
               onClick={() => handleAddToCarrito({ ...producto, quantity })}
               variant="ghost"
-              colorScheme="blue"
-              shadow={"xl"}
+              color={"ly.900"}
+              bg={"ly.700"}
             >
-              Add to cart
+              Añadir al Carrito
             </Button>
           </Flex>
         )}
@@ -194,11 +203,9 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>Are you sure?</AlertDialogHeader>
+          <AlertDialogHeader>Presiona si para confirmar?</AlertDialogHeader>
           <AlertDialogCloseButton />
-          <AlertDialogBody>
-            Are you sure you want to delete this product of your notes?
-          </AlertDialogBody>
+          <AlertDialogBody>Estas seguro que deseas eliminar?</AlertDialogBody>
           <AlertDialogFooter>
             <Button onClick={onClose}>No</Button>
             {isLoading ? (
@@ -209,8 +216,11 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
               <Button
                 onClick={async () => {
                   try {
-                    const response = await apiClient.delete(
+                    const response = await apiClient.put(
                       `/product/${producto.id}`,
+                      {
+                        stock: false,
+                      },
                       {
                         headers: {
                           Authorization: `Bearer ${localStorage.getItem(
@@ -222,8 +232,8 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
                     if (!response.data.ok) throw new Error("err");
                     setIsLoading(false);
                     toast({
-                      title: "Product deleted successfuly",
-                      status: "warning",
+                      title: "Producto eliminado correctamente",
+                      status: "error",
                       duration: 2000,
                       position: "top-left",
                       isClosable: true,
@@ -244,7 +254,7 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
                 colorScheme="red"
                 ml={3}
               >
-                Yes
+                Si
               </Button>
             )}
           </AlertDialogFooter>
@@ -253,13 +263,13 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
       <Modal isOpen={isOpen1} onClose={onClose1}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Edit</ModalHeader>
+          <ModalHeader>Editar</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form>
-              <Heading mb={4}>Edit Product</Heading>
+              <Heading mb={4}>Editar Producto</Heading>
               <FormControl>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nombre</FormLabel>
                 <Input
                   type="text"
                   name="name"
@@ -273,7 +283,7 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
                 />
               </FormControl>
               <FormControl mt={4}>
-                <FormLabel>Description</FormLabel>
+                <FormLabel>Descripcion</FormLabel>
                 <Input
                   type="text"
                   name="description"
@@ -287,7 +297,7 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
                 />
               </FormControl>
               <FormControl mt={4}>
-                <FormLabel>Image</FormLabel>
+                <FormLabel>Imagen</FormLabel>
                 <Input
                   type="text"
                   name="img"
@@ -300,37 +310,9 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
                   _placeholder={{ color: "gray.400" }}
                 />
               </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>Category</FormLabel>
-                {/*  <Input
-                      {...register("firstName")}
-                      type="text"
-                      placeholder="Your name"
-                      focusBorderColor="gray.600"
-                      borderColor={"whiteAlpha.300"}
-                      shadow={"xl"}
-                      _placeholder={{ color: "gray.400" }}
-                    /> */}
-                <Select
-                  name="category"
-                  onChange={handleChangeProduct}
-                  value={editProduct.category.id}
-                  placeholder="Select category"
-                >
-                  {categories?.map((category) => (
-                    <option
-                    key={category.id}
-                      /*                     onChange={handleChangeProduct}
-                       */ value={category.id}
-                    >
-                      {category.name}
-                    </option>
-                  ))}
-                </Select>
-              </FormControl>
 
               <FormControl mt={4}>
-                <FormLabel>Price</FormLabel>
+                <FormLabel>Precio</FormLabel>
                 <Input
                   onChange={handleChangeProduct}
                   value={editProduct.price}
@@ -358,11 +340,11 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
                 colorScheme="blue"
                 width={"full"}
               >
-                Save changes
+                Guardar Cambios
               </Button>
             )}
-            <Button colorScheme="red" ml={1} onClick={onClose}>
-              Close
+            <Button colorScheme="red" ml={1} onClick={onClose1}>
+              Cerrar
             </Button>
           </ModalFooter>
         </ModalContent>

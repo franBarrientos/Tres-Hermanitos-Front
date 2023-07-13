@@ -24,11 +24,12 @@ export const Purchases = () => {
     }
   };
 
-  const { data, isLoading } = useSWR("/purchase", fetcher, {
+  const { data, isLoading, error } = useSWR("/purchase", fetcher, {
     refreshInterval: 1000,
   });
 
   if (isLoading) return <Text>Loading...</Text>;
+  if (error) return <Text color="ly.700" textAlign={"center"} fontSize={"2xl"}>Aun no hay ventas</Text>;
 
   return (
     <SimpleGrid
@@ -44,11 +45,13 @@ export const Purchases = () => {
             direction={"column"}
             justifyContent={"space-between"}
             alignItems={"center"}
+            bg={"ly.900"}
+            color={"ly.700"}
           >
             <CardHeader display={"flex"} flexDirection={"column"} gap={1}>
-              <Heading size="md">Dni Client: {purchase.customer.dni}</Heading>
-              <Heading size="md">State: {purchase.state}</Heading>
-              <Heading size="md">Payment: {purchase.payment}</Heading>
+              <Heading size="md">Dni Cliente: {purchase.customer.dni}</Heading>
+              <Heading size="md">Estado Compra: {purchase.state}</Heading>
+              <Heading size="md">Pago: {purchase.payment}</Heading>
             </CardHeader>
             <CardBody>
               <List spacing={3} maxHeight={60} overflowY={"scroll"}>
@@ -57,19 +60,19 @@ export const Purchases = () => {
                     return (
                       <ListItem>
                         <ListIcon as={CheckIcon} color="green.500" />
-                        {product.product.name}
+                        <Text color={"ly.400"}>{product.product.name}</Text>
                       </ListItem>
                     );
                   })
                 ) : (
                   <ListItem>
                     <ListIcon as={CheckIcon} color="green.500" />
-                    Empty
+                    Vacio
                   </ListItem>
                 )}
               </List>{" "}
               <Heading textAlign={"center"} mt={3} size="md">
-                💶 Total: {purchase.totalPurchase}
+                💵 Total: {purchase.totalPurchase}
               </Heading>
             </CardBody>
           </Card>

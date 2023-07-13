@@ -107,10 +107,12 @@ function App() {
       pt={{ base: 0, md: 10 }}
       px={{ base: 8, md: 12 }}
       mb={8}
+      bg={"ly.800"}
+      color={"ly.400"}
       borderRadius="md"
       boxShadow="md"
     >
-      <Heading mb={4}>Log In</Heading>
+      <Heading mb={4}>Iniciar Sesion</Heading>
       <GoogleLogin
         onSuccess={handleGoogleLoginSuccess}
         onError={handleGoogleLoginError}
@@ -120,12 +122,12 @@ function App() {
       </Button> */}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl>
+        <FormControl mt={2}>
           <FormLabel>Email</FormLabel>
           <Input
             {...register("email")}
             type="email"
-            placeholder="Your Email"
+            placeholder="Tu Email"
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
@@ -133,11 +135,11 @@ function App() {
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>Password</FormLabel>
+          <FormLabel>Contraseña</FormLabel>
           <Input
             {...register("password")}
             type="password"
-            placeholder="Your Password"
+            placeholder="Tu Contraseña"
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
@@ -156,10 +158,10 @@ function App() {
       </form>
 
       <Text mt={6} fontWeight={"semibold"} textAlign={"center"}>
-        Don't have an account yet?{" "}
+        No tienes una cuenta?{" "}
         <Link to={"/auth/register"}>
           <Text fontSize={"lg"} fontWeight={"bold"}>
-            Create one
+            Crear Una
           </Text>
         </Link>
       </Text>

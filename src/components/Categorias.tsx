@@ -23,20 +23,28 @@ export default function Categoria({ category, isAdmin = false }: props) {
       display={"flex"}
       alignItems={"center"}
       gap={2}
-      border={"1px"}
-      mt={1}
+      mt={2}
+      color={
+        !isAdmin
+          ? actualCategory!.id === category.id
+            ? "#ly.900"
+            : "ly.700"
+          : featureAdmin!.id === category.id
+          ? "#ly.900"
+          : "ly.700"
+      }
       borderColor={"gray.100"}
       w={"full"}
       p={1}
-      _hover={{ backgroundColor: "#FFC200", cursor: "pointer" }}
+      _hover={{ backgroundColor: "#FFC200", cursor: "pointer", color:"ly.900" }}
       bgColor={
         !isAdmin
           ? actualCategory!.id === category.id
             ? "#FFC200"
-            : "white"
+            : "ly.800"
           : featureAdmin!.id === category.id
           ? "#FFC200"
-          : "white"
+          : "ly.800"
       }
     >
       <Img rounded={"full"} w={"12"} src={category.img}></Img>

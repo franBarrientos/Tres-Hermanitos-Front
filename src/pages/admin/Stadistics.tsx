@@ -6,13 +6,9 @@ export default function Stadistics() {
   useEffect(() => {
     (async function () {
       const data = [
-        { year: 2010, count: 10 },
-        { year: 2011, count: 20 },
-        { year: 2012, count: 200 },
-        { year: 2013, count: 186 },
-        { year: 2014, count: 170 },
-        { year: 2015, count: 160 },
-        { year: 2016, count: 100 },
+        { year: 2022, count: 190000 },
+        { year: 2023, count: 200000 },
+   
       ];
  
       let data1: any;
@@ -109,7 +105,7 @@ export default function Stadistics() {
             labels: data.map((row) => row.year),
             datasets: [
               {
-                label: "Acquisitions by year",
+                label: "Ventas por año",
                 data: data.map((row) => row.count),
               },
             ],
@@ -134,7 +130,7 @@ export default function Stadistics() {
               },
               title: {
                 display: true,
-                text: "Products most sales",
+                text: "Productos mas vendidos",
                 font: {
                   size: 18,
                 },
@@ -162,7 +158,7 @@ export default function Stadistics() {
               },
               title: {
                 display: true,
-                text: "Categories most sales",
+                text: "Categorias mas vendidas",
                 font: {
                   size: 18,
                 },
@@ -177,10 +173,10 @@ export default function Stadistics() {
     })();
   }, []);
   return (
-    <Box>
-      <Heading>Stadistics</Heading>
+    <Box color={"ly.700"}>
+      <Heading>Estadisticas</Heading>
       <Flex alignItems={"center"} direction={"column"} gap={2}>
-        <Heading>Purchases for year</Heading>
+        <Heading>Ventas por año</Heading>
         <Box w={{ base: "300px", md: "500px", lg: "800px" }}>
           <canvas id="acquisitions"></canvas>
         </Box>

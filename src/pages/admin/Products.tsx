@@ -144,6 +144,9 @@ export default function Products() {
     }
   };
 
+  
+
+
   return (
     <>
       {isMobile ? (
@@ -152,6 +155,7 @@ export default function Products() {
           justifyContent={"flex-start"}
           alignContent={"center"}
           pb={1}
+          gap={5}
         >
           <MenuMobile />
           <Button
@@ -160,7 +164,7 @@ export default function Products() {
             bgColor={"orange.300"}
             rounded={"md"}
           >
-            Create New Product
+            Crear Nuevo Producto
           </Button>
         </Flex>
       ) : (
@@ -172,12 +176,13 @@ export default function Products() {
               bgColor={"orange.300"}
               rounded={"md"}
             >
-              Create New Product
+              Crear Nuevo Producto
             </Button>
             {categories?.map((category) => (
               <Tab
                 fontSize={"lg"}
                 p={2}
+                color={"ly.700"}
                 onClick={() => handleClickCategory(category.id)}
               >
                 {category.name}
@@ -196,13 +201,13 @@ export default function Products() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create</ModalHeader>
+          <ModalHeader>Crear</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form>
-              <Heading mb={4}>New Product</Heading>
+              <Heading mb={4}>Nuevo Producto</Heading>
               <FormControl>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nombre</FormLabel>
                 <Input
                   {...register("name")}
                   type="text"
@@ -214,7 +219,7 @@ export default function Products() {
                 />
               </FormControl>
               <FormControl mt={4}>
-                <FormLabel>Description</FormLabel>
+                <FormLabel>Descripcion</FormLabel>
                 <Input
                   {...register("description")}
                   type="text"
@@ -226,7 +231,7 @@ export default function Products() {
                 />
               </FormControl>
               <FormControl mt={4}>
-                <FormLabel>Image</FormLabel>
+                <FormLabel>Imagen</FormLabel>
                 <Input
                   {...register("img")}
                   type="text"
@@ -238,7 +243,7 @@ export default function Products() {
                 />
               </FormControl>
               <FormControl mt={4}>
-                <FormLabel>Category</FormLabel>
+                <FormLabel>Categoria</FormLabel>
 
                 <Select placeholder="Select category" {...register("category")}>
                   {categories?.map((category) => (
@@ -248,7 +253,7 @@ export default function Products() {
               </FormControl>
 
               <FormControl mt={4}>
-                <FormLabel>Price</FormLabel>
+                <FormLabel>Precio</FormLabel>
                 <Input
                   {...register("price")}
                   type="number"
@@ -274,11 +279,11 @@ export default function Products() {
                 colorScheme="blue"
                 width={"full"}
               >
-                Create
+                Crear
               </Button>
             )}
             <Button colorScheme="red" ml={1} onClick={onClose}>
-              Close
+              Cerrar
             </Button>
           </ModalFooter>
         </ModalContent>

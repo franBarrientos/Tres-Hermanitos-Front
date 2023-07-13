@@ -8,11 +8,11 @@ export default function LayoutHome() {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   return (
     <>
-      <Flex flexDirection={{ base: "column", md: "row" }}>
+      <Flex flexDirection={{ base: "column", md: "row" }} bg={"ly.900"} h={"100vh"}>
         <Sidebar />
-        <Box flex={1} bg={"gray.100"} overflowY={"scroll"} p={3} h={"100vh"}>
+        <Box flex={1} bg={"ly.800"} overflowY={"scroll"} p={3} h={"100vh"}>
           <Outlet />
-        </Box>
+        </Box >
         {isMobile ? null : <Resumen />}
       </Flex>
     </>

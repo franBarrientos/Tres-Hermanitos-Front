@@ -7,7 +7,8 @@ import {
   Stack,
   CardFooter,
   Button,
-  Box,
+  
+  Flex,
 } from "@chakra-ui/react";
 import { ProductInterface } from "../interfaces/product";
 import useApp from "../hook/useApp";
@@ -21,6 +22,8 @@ export default function ProductResumen(props: { product: ProductInterface }) {
       display={"flex"}
       alignItems={"center"}
       mt={1}
+      bg={"ly.800"}
+      color={"ly.400"}
     >
       <Image
         objectFit="cover"
@@ -36,31 +39,46 @@ export default function ProductResumen(props: { product: ProductInterface }) {
 
           <Text py="2">{props.product.description}</Text>
         </CardBody>
+        <Flex justifyContent={"center"}>
+          <Button
+            px={1}
+            w={{ base: "24", md: "36" }}
+            variant="solid"
+            colorScheme="yellow"
+          >
+            <Text fontSize={"md"} color={"ly.900"}>
 
+            Cantidad: {props.product.quantity}
+
+            </Text>
+          </Button>
+        </Flex>
         <CardFooter
           display={"flex"}
           flexDirection={{ base: "column", md: "row" }}
           justifyContent={"center"}
           alignItems={"center"}
+          gap={2}
+          py={1}
         >
-          <Button px={0} mx={1} variant="solid" colorScheme="purple">
-            {props.product.quantity}
+          <Button
+            px={2}
+            variant="solid"
+            colorScheme="blue"
+            w={{ base: "24", md: "20" }}
+          >
+            ${props.product.price}
           </Button>
-          <Box my={{ base: 1, md: 0 }} display={"flex"}>
-            <Button px={2} variant="solid" colorScheme="blue">
-              ${props.product.price}
-            </Button>
-            <Button
-              onClick={() => handleRemoveProductFromCarrito(props.product.id)}
-              px={1}
-              ml={1}
-              variant="solid"
-              w={"20"}
-              colorScheme="red"
-            >
-              Remove
-            </Button>
-          </Box>
+          <Button
+            onClick={() => handleRemoveProductFromCarrito(props.product.id)}
+            variant="solid"
+            w={{ base: "24", md: "20" }}
+            colorScheme="red"
+          >
+            Quitar
+          </Button>
+          {/*  <Box my={{ base: 1, md: 0 }} display={"flex"}>
+          </Box> */}
         </CardFooter>
       </Stack>
     </Card>

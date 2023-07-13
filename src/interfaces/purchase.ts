@@ -7,4 +7,5 @@ export interface PurchaseInterface {
   payment: string;
   customer: CustomerInterface | number;
   purchasesProducts?: PurchasesProductsInterface[];
+  totalPurchase?:number;
 }

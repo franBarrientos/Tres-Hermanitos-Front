@@ -82,7 +82,7 @@ export default function Categories() {
             bgColor={"orange.300"}
             rounded={"md"}
           >
-            Create New Category
+            Crear Nueva Categoria
           </Button>
         </Flex>
       ) : (
@@ -95,7 +95,7 @@ export default function Categories() {
               bgColor={"orange.300"}
               rounded={"md"}
             >
-              Create New Category
+              Crear Nueva Categoria
             </Button>
           </TabList>
         </Tabs>
@@ -109,13 +109,13 @@ export default function Categories() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create</ModalHeader>
+          <ModalHeader>Crear</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form>
-              <Heading mb={4}>New Category</Heading>
+              <Heading mb={4}>Crear Nueva Categoria</Heading>
               <FormControl>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nombre</FormLabel>
                 <Input
                   {...register("name")}
                   type="text"
@@ -127,7 +127,7 @@ export default function Categories() {
                 />
               </FormControl>
               <FormControl mt={4}>
-                <FormLabel>Image</FormLabel>
+                <FormLabel>Imagen</FormLabel>
                 <Input
                   {...register("img")}
                   type="text"
@@ -153,11 +153,11 @@ export default function Categories() {
                 colorScheme="blue"
                 width={"full"}
               >
-                Create
+                Crear
               </Button>
             )}
             <Button colorScheme="red" ml={1} onClick={onClose}>
-              Close
+              Cerrar
             </Button>
           </ModalFooter>
         </ModalContent>

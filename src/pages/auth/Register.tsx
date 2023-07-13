@@ -135,15 +135,17 @@ function Register() {
       mb={8}
       borderRadius="md"
       boxShadow="md"
+      bg={"ly.800"}
+      color={"ly.400"}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Heading mb={4}>Log In</Heading>
+        <Heading mb={4}>Registrarme</Heading>
         <FormControl>
           <FormLabel>Email</FormLabel>
           <Input
             {...register("email")}
             type="email"
-            placeholder="Your Email"
+            placeholder="Tu Email"
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
@@ -151,11 +153,11 @@ function Register() {
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>Password</FormLabel>
+          <FormLabel>Contraseña</FormLabel>
           <Input
             {...register("password")}
             type="password"
-            placeholder="Your Password"
+            placeholder="Tu Contraseña"
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
@@ -163,11 +165,11 @@ function Register() {
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Nombre</FormLabel>
           <Input
             {...register("firstName")}
             type="text"
-            placeholder="Your name"
+            placeholder="Tu nombre"
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
@@ -175,11 +177,11 @@ function Register() {
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>Surname</FormLabel>
+          <FormLabel>Apellido</FormLabel>
           <Input
             {...register("lastName")}
             type="text"
-            placeholder="Your surname"
+            placeholder="Tu apellido"
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
@@ -187,11 +189,11 @@ function Register() {
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>City</FormLabel>
+          <FormLabel>Ciudad</FormLabel>
           <Input
             {...register("city")}
             type="text"
-            placeholder="Your city"
+            placeholder="Tu ciudad"
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
@@ -199,11 +201,11 @@ function Register() {
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>Provinve</FormLabel>
+          <FormLabel>Provincia</FormLabel>
           <Input
             {...register("province")}
             type="text"
-            placeholder="Your province"
+            placeholder="Tu provincia"
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
@@ -211,11 +213,11 @@ function Register() {
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>Age</FormLabel>
+          <FormLabel>Edad</FormLabel>
           <Input
             {...register("age")}
             type="number"
-            placeholder="Your age"
+            placeholder="Tu edad"
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
@@ -228,16 +230,16 @@ function Register() {
           </Flex>
         ) : (
           <Button type="submit" mt={6} colorScheme="blue" width={"full"}>
-            Register
+            Registrarme
           </Button>
         )}
       </form>
 
       <Text mt={6} fontWeight={"semibold"} textAlign={"center"}>
-        You've already hace an account?{" "}
+        Ya tienes una cuenta?{" "}
         <Link to={"/auth/login"}>
           <Text fontSize={"lg"} fontWeight={"bold"}>
-            Login
+            Iniciar Sesion
           </Text>
         </Link>
       </Text>

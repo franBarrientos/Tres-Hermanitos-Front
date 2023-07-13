@@ -26,8 +26,8 @@ export default function MenuMobile({ isAdmin = false }: props) {
 
   return (
     <Menu>
-      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-        {isAdmin ? "Menu" : " Category"}
+      <MenuButton as={Button} rightIcon={<ChevronDownIcon />} bg={"ly.400"} fontSize={"xl"}>
+        {isAdmin ? "Menu" : " Categorias "}
       </MenuButton>
       <MenuList>
         {!isAdmin
@@ -38,7 +38,7 @@ export default function MenuMobile({ isAdmin = false }: props) {
                   minH="48px"
                   onClick={() => handleClickCategory(category.id)}
                   bgColor={
-                    actualCategory!.id === category.id ? "#FFC200" : "white"
+                    actualCategory!.id === category.id ? "#FFC200" : "ly.400"
                   }
                 >
                   <Image
