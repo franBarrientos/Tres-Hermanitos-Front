@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiUrl: string = import.meta.env.VITE_BASE_URL;
+const apiUrl: string = "https://ecommerce-backv3-production.up.railway.app/api";
 const apiClient = axios.create({
   baseURL: apiUrl,
   timeout: 5000,
