@@ -1,11 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login from "./pages/auth/Login";
 import LayoutAuthenticate from "./layouts/LayoutAuthenticate";
 import LayoutHome from "./layouts/LayoutHome";
 import Home from "./pages/home/Home";
-import Register from "./pages/auth/Register";
-import Admin from "./pages/admin/Admin";
 import LayoutAdmin from "./layouts/LayoutAdmin";
+import { lazy, Suspense } from "react";
+
+const Admin = lazy(()=>import("./pages/admin/Admin"))
+const Login = lazy(()=>import("./pages/auth/Login"))
+const Register = lazy(()=>import("./pages/auth/Register"))
 
 const router = createBrowserRouter([
   {
@@ -15,7 +17,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-      }
+      },
     ],
   },
   {
@@ -23,25 +25,41 @@ const router = createBrowserRouter([
     element: <LayoutAuthenticate />,
     children: [
       {
-        path:"/auth/login",
-        element: <Login />,
+        path: "/auth/login",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Login />
+          </Suspense>
+        ),
       },
       {
-        path:"/auth/register",
-        element: <Register />,
-      }
+        path: "/auth/register",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Register />
+          </Suspense>
+        ),
+      },
     ],
   },
   {
-    path:"/admin",
+    path: "/admin",
     element: <LayoutAdmin />,
-    children:[
+    children: [
       {
-        index:true,
-        element:<Admin/>
-      }
-    ]
-  }
+        index: true,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Admin />
+          </Suspense>
+        ),
+      },
+    ],
+  },
+  {
+    path: "*",
+    element: <LayoutAuthenticate />,
+  },
 ]);
 
 export default router;

@@ -104,9 +104,9 @@ function App() {
     <Box
       maxW="md"
       pb={{ base: 5, md: 10 }}
-      pt={{ base: 0, md: 10 }}
+      pt={{ base: 5, md: 10 }}
       px={{ base: 8, md: 12 }}
-      mb={8}
+      mb={8}  
       bg={"ly.800"}
       color={"ly.400"}
       borderRadius="md"

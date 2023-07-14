@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { ProductInterface } from "../interfaces/product";
 import useApp from "../hook/useApp";
+import { releaseImgUrl } from "../helpers/cloudinaty.helper";
 
 export default function ProductResumen(props: { product: ProductInterface }) {
   const { handleRemoveProductFromCarrito } = useApp();
@@ -21,15 +22,15 @@ export default function ProductResumen(props: { product: ProductInterface }) {
       direction={{ base: "row", md: "column" }}
       display={"flex"}
       alignItems={"center"}
-      mt={1}
+      mt={2}
+      py={2}
       bg={"ly.800"}
       color={"ly.400"}
     >
       <Image
         objectFit="cover"
         w={{ base: 60, md: 80 }}
-        width={{ base: 56 }}
-        src={props.product.img}
+        src={releaseImgUrl(props.product.img)}
         alt={props.product.name}
       />
 

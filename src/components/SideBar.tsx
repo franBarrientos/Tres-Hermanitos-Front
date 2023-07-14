@@ -35,7 +35,7 @@ export default function Sidebar() {
         <>
           <ModalCarrito />
           <Flex justifyContent={"space-evenly"} alignItems={"flex-start"}>
-            <Img src="logo.jpeg" alt="logo svg" w={"44"} />
+            <Img src="logo.webp" h={"auto"} alt="logo svg" w={"44"} />
 
             <Flex flexDirection={"column"} alignItems={"flex-start"} mb={2}>
               <Text
@@ -144,7 +144,12 @@ export default function Sidebar() {
         </>
       ) : (
         <>
-          <Img src="logo.jpeg" alt="logo svg" w={["40", "60", "80"]} />
+          <Img
+            src="logo.webp"
+            h={"auto"}
+            alt="logo svg"
+            w={["40", "60", "80"]}
+          />
           <Text
             bgClip="text"
             fontSize={["2xl", "3xl"]}
@@ -189,7 +194,7 @@ export default function Sidebar() {
                     setOpenHistory(true);
                   }}
                 >
-                 🛍 Historial de Compras
+                  🛍 Historial de Compras
                 </Button>
               )}
             </>

@@ -245,7 +245,7 @@ export default function Products() {
               <FormControl mt={4}>
                 <FormLabel>Categoria</FormLabel>
 
-                <Select placeholder="Select category" {...register("category")}>
+                <Select defaultValue={categories? categories[0].id : 1} placeholder="Select category" {...register("category")}>
                   {categories?.map((category) => (
                     <option value={category.id}>{category.name}</option>
                   ))}

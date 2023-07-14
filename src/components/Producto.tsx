@@ -39,6 +39,7 @@ import { ProductInterface } from "../interfaces/product";
 import useApp from "../hook/useApp";
 import { useState, useRef } from "react";
 import apiClient from "../config/axiosClient";
+import { releaseImgUrl } from "../helpers/cloudinaty.helper";
 
 type productoProp = {
   producto: ProductInterface;
@@ -124,8 +125,13 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
       boxShadow="2px 6px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
       bg={"ly.900"}
     >
-      <CardBody color={"ly.400"}>
-        <Image src={producto.img} borderRadius="lg" />
+      <CardBody color={"ly.400"}> 
+        <Image
+          src={releaseImgUrl(producto.img)}
+          w={400}
+          h={300}
+          borderRadius="lg"
+        />
         <Stack mt="6" spacing="3">
           <Heading size="md">{producto.name}</Heading>
           <Text>{producto.description}</Text>

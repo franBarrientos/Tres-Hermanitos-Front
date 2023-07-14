@@ -26,7 +26,7 @@ export default function SideBarAdmin() {
       {isMobile ? (
         <>
           <Flex justifyContent={"space-evenly"} alignItems={"flex-start"}>
-            <Img src="logo.jpeg" alt="logo svg" w={"44"} />
+            <Img src="logo.webp" alt="logo svg" w={"44"} />
 
             <Flex flexDirection={"column"} alignItems={"flex-start"} mb={2}>
               <Text
@@ -77,7 +77,7 @@ export default function SideBarAdmin() {
         </>
       ) : (
         <>
-          <Img src="logo.jpeg" alt="logo svg" w={["40", "60", "80"]} />
+          <Img src="logo.webp" alt="logo svg" w={["40", "60", "80"]} />
           <Text
             bgClip="text"
             fontSize={["2xl", "3xl"]}
