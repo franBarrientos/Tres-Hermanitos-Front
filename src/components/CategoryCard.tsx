@@ -64,6 +64,18 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
       editCategory,
       category
     );
+
+    if (formData.name === "" || formData.img === "") {
+      setIsLoading(false);
+      toast({
+        title: "Faltan Campos Porfavor completalos",
+        status: "error",
+        duration: 2000,
+        position: "top-left",
+        isClosable: true,
+      });
+      return;
+    }
     try {
       const response = await apiClient.put(
         `/category/${category.id}`,
@@ -130,9 +142,6 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
               shadow={"xl"}
             >
               Editar
-            </Button>
-            <Button variant="solid" colorScheme="red" shadow={"xl"}>
-              Eliminar
             </Button>
           </Stack>
         </CardFooter>

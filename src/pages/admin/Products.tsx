@@ -46,8 +46,7 @@ export default function Products() {
 
     if (name === "") {
       toast({
-        title: "Invalid Values .",
-        description: "Insert a name valid.",
+        title: "Ingrese un Nombre Valido",
         status: "error",
         duration: 1000,
         position: "top-left",
@@ -59,8 +58,7 @@ export default function Products() {
 
     if (description === "") {
       toast({
-        title: "Invalid Values .",
-        description: "Ingrese a description valid.",
+        title: "Ingrese una Descripcion Valida",
         status: "error",
         duration: 2000,
         position: "top-left",
@@ -71,8 +69,7 @@ export default function Products() {
     }
     if (category === "") {
       toast({
-        title: "Invalid Values .",
-        description: "Ingrese a category valid.",
+        title: "Ingrese una Categoria Valida",
         status: "error",
         duration: 2000,
         position: "top-left",
@@ -83,8 +80,7 @@ export default function Products() {
     }
     if (img === "") {
       toast({
-        title: "Invalid Values .",
-        description: "Ingrese a category valid.",
+        title: "Ingrese una Imagen Valida",
         status: "error",
         duration: 2000,
         position: "top-left",
@@ -96,8 +92,7 @@ export default function Products() {
 
     if (price === "") {
       toast({
-        title: "Invalid Values .",
-        description: "Ingrese a price valid.",
+        title: "Ingrese una Precio Valido",
         status: "error",
         duration: 2000,
         position: "top-left",
@@ -121,7 +116,7 @@ export default function Products() {
       });
       if (response.data.ok) {
         toast({
-          title: `${response.data.body.name} created sucessfuly`,
+          title: `${response.data.body.name} creado correctamente`,
           status: "success",
           duration: 2000,
           position: "top-left",
@@ -134,7 +129,7 @@ export default function Products() {
       }
     } catch (error) {
       toast({
-        title: "Erron on Server",
+        title: "Error de Servidor",
         status: "error",
         duration: 2000,
         position: "top-left",
@@ -143,9 +138,6 @@ export default function Products() {
       setIsLoading(false);
     }
   };
-
-  
-
 
   return (
     <>
@@ -245,7 +237,11 @@ export default function Products() {
               <FormControl mt={4}>
                 <FormLabel>Categoria</FormLabel>
 
-                <Select defaultValue={categories? categories[0].id : 1} placeholder="Select category" {...register("category")}>
+                <Select
+                  defaultValue={categories ? categories[0].id : 1}
+                  placeholder="Select category"
+                  {...register("category")}
+                >
                   {categories?.map((category) => (
                     <option value={category.id}>{category.name}</option>
                   ))}

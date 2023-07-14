@@ -34,6 +34,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
 } from "@chakra-ui/react";
 import { ProductInterface } from "../interfaces/product";
 import useApp from "../hook/useApp";
@@ -48,7 +49,7 @@ type productoProp = {
 };
 
 export default function Producto({ producto, isAdmin = false }: productoProp) {
-  const { handleAddToCarrito } = useApp();
+  const { handleAddToCarrito, categories } = useApp();
   const [quantity, setQuantity] = useState(1);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -80,10 +81,21 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
 
   const onSubmitEditProduct = async () => {
     setIsLoading(true);
-    const formData: { price?: number; category?: number } = getDifferentFields(
+    const formData: {name?:string, description?:string, price?: string | number; category?: string | number, } = getDifferentFields(
       editProduct,
       producto
     );
+    if(formData.description === "" || formData.price === "" || formData.name === "" || formData.category === ""){
+      setIsLoading(false);
+      toast({
+        title: "Faltan Campos Porfavor completalos",
+        status: "error",
+        duration: 2000,
+        position: "top-left",
+        isClosable: true,
+      });
+      return
+    }
     if (formData.price) formData.price = Number(formData.price);
     if (formData.category) formData.category = Number(formData.category);
     try {
@@ -125,7 +137,7 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
       boxShadow="2px 6px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
       bg={"ly.900"}
     >
-      <CardBody color={"ly.400"}> 
+      <CardBody color={"ly.400"}>
         <Image
           src={releaseImgUrl(producto.img)}
           w={400}
@@ -315,6 +327,21 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
                   shadow={"xl"}
                   _placeholder={{ color: "gray.400" }}
                 />
+              </FormControl>
+
+              <FormControl mt={4}>
+                <FormLabel>Categoria</FormLabel>
+
+                <Select
+                  defaultValue={editProduct.category.id || 1}
+                  placeholder="Select category"
+                  name="category"
+                  onChange={handleChangeProduct}
+                >
+                  {categories?.map((category) => (
+                    <option value={category.id}>{category.name}</option>
+                  ))}
+                </Select>
               </FormControl>
 
               <FormControl mt={4}>

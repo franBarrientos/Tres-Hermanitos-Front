@@ -36,8 +36,33 @@ export default function Categories() {
   const toast = useToast();
 
   const onSubmitNewCategory = async () => {
-    const formData = getValues();
+    setIsLoading(true);
+    const name: string = getValues("name").toString().trim();
+    const img: string = getValues("img").toString().trim();
+    if (name === "") {
+      toast({
+        title: "Ingrese un Nombre Valido",
+        status: "error",
+        duration: 1000,
+        position: "top-left",
+        isClosable: true,
+      });
+      setIsLoading(false);
+      return;
+    }
 
+    if (img === "") {
+      toast({
+        title: "Ingrese una Imagen Valida",
+        status: "error",
+        duration: 2000,
+        position: "top-left",
+        isClosable: true,
+      });
+      setIsLoading(false);
+      return;
+    }
+    const formData = getValues();    
     try {
       setIsLoading(true);
       const response = await apiClient.post("/category", formData, {
@@ -45,7 +70,7 @@ export default function Categories() {
       });
       if (!response.data.ok) throw new Error("err");
       toast({
-        title: `${response.data.body.name} category created sucessfuly`,
+        title: `${response.data.body.name} categoria creada Exitomasamente`,
         status: "success",
         duration: 2000,
         position: "top-left",
@@ -56,7 +81,7 @@ export default function Categories() {
       onClose();
     } catch (error) {
       toast({
-        title: "Erron on Server",
+        title: "Error de Servidor",
         status: "error",
         duration: 2000,
         position: "top-left",
@@ -71,9 +96,10 @@ export default function Categories() {
       {isMobile ? (
         <Flex
           shadow={"2xl"}
-          justifyContent={"flex-start"}
+          justifyContent={"space-between"}
           alignContent={"center"}
-          pb={1}
+          pb={4}
+          
         >
           <MenuMobile />
           <Button
