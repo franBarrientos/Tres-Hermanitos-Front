@@ -34,13 +34,14 @@ export default function Products() {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
-  const { handleSubmit, register, getValues } = useForm();
+  const { handleSubmit, register, getValues, setValue } = useForm();
   const toast = useToast();
 
   const validateProduct = () => {
     const name: string = getValues("name").toString().trim();
     const description: string = getValues("description").toString().trim();
-    const img: string = getValues("img").toString().trim();
+    //    const img: string = getValues("img").toString().trim();
+    const img: File = getValues("img");
     const category: string = getValues("category").toString().trim();
     const price: string = getValues("price").toString().trim();
 
@@ -78,7 +79,18 @@ export default function Products() {
       setIsLoading(false);
       return false;
     }
-    if (img === "") {
+    /* if (img === "") {
+      toast({
+        title: "Ingrese una Imagen Valida",
+        status: "error",
+        duration: 2000,
+        position: "top-left",
+        isClosable: true,
+      });
+      setIsLoading(false);
+      return false;
+    } */
+    if (!img) {
       toast({
         title: "Ingrese una Imagen Valida",
         status: "error",
@@ -107,7 +119,13 @@ export default function Products() {
   const onSubmitNewProduct = async () => {
     setIsLoading(true);
     if (!validateProduct()) return;
-    const formData = getValues();
+    const formData = new FormData();
+    const values = getValues();
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    console.log(formData)
     try {
       const response = await apiClient.post("/product", formData, {
         headers: {
@@ -222,8 +240,8 @@ export default function Products() {
                   _placeholder={{ color: "gray.400" }}
                 />
               </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>Imagen</FormLabel>
+              {/*  <FormControl mt={4}>
+                <FormLabel>Imagen Url</FormLabel>
                 <Input
                   {...register("img")}
                   type="text"
@@ -232,6 +250,21 @@ export default function Products() {
                   borderColor={"whiteAlpha.300"}
                   shadow={"xl"}
                   _placeholder={{ color: "gray.400" }}
+                />
+              </FormControl> */}
+
+              <FormControl mt={4}>
+                <FormLabel>Imagen</FormLabel>
+                <input
+                  type="file"
+                  {...register("img")}
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files ? e.target.files[0] : null;
+                    if (file) {
+                      setValue("img", file);
+                    }
+                  }}
                 />
               </FormControl>
               <FormControl mt={4}>

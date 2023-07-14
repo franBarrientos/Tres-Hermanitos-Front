@@ -328,6 +328,7 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
                   _placeholder={{ color: "gray.400" }}
                 />
               </FormControl>
+              
 
               <FormControl mt={4}>
                 <FormLabel>Categoria</FormLabel>
