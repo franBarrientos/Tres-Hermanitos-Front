@@ -23,7 +23,6 @@ interface MyContextType {
   setActualCategory: (categoryToUpdate: CategoryInterface) => void;
   actualCategory: CategoryInterface;
   handleClickCategory: (id: number) => void;
-  styleCss: { principal: string };
   carrito: ProductInterface[] | null;
   setCarrito: Dispatch<SetStateAction<ProductInterface[] | []>>;
   handleAddToCarrito: (product: ProductInterface) => void;
@@ -44,6 +43,7 @@ interface MyContextType {
   setOpenHistory: Dispatch<SetStateAction<boolean>>;
   flatFetch: boolean;
   setFlatFetch: Dispatch<SetStateAction<boolean>>;
+  spinnerPayMercadoP: boolean;
 }
 
 const categoriesAdmin: CategoryInterface[] = [
@@ -93,7 +93,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   const [changeCategory, setChangeCategory] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
   const [flatFetch, setFlatFetch] = useState<boolean>(false);
-
+  const [spinnerPayMercadoP, setSpinnerPayMercadoP] = useState<boolean>(false);
   const toast = useToast();
 
   const fetchCategories = async () => {
@@ -127,15 +127,14 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
 
   useEffect(() => {
     const refreshToken = async () => {
- 
       const token = localStorage.getItem("token");
       if (token) {
         try {
           const response = await apiClient.post("/refreshToken", {
             token,
           });
-          if(!response.data.ok)throw new Error("Expired")
-          console.log(response)
+          if (!response.data.ok) throw new Error("Expired");
+          console.log(response);
           localStorage.setItem("token", response.data.body.token);
         } catch (error) {
           toast({
@@ -147,7 +146,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           });
           localStorage.removeItem("token");
           localStorage.removeItem("user");
-          setUser(null)
+          setUser(null);
         }
       }
     };
@@ -219,56 +218,52 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   };
 
   const pay = async (payment: string, customerId: number) => {
-    if (user && carrito.length > 0) {
-      try {
-        const response = await createPurchase({
-          state: "pendiente",
-          payment,
-          customer: customerId,
-        });
-        if (!response.data.ok) throw new Error("err");
-        if (payment == "MP") payMercadoPago(response.data.body.id);
-        setFlatFetch(false);
-        Promise.all(
-          carrito.map((product) => {
-            return createPurchasesProducts({
-              quantity: product.quantity!,
-              purchase: response.data.body.id,
-              product: product.id,
-            });
-          })
-        )
-          .then(() => {
-            setCarrito([]);
-            toast({
-              title: "Compra Exitosa",
-              description: "Disfruta tu compra",
-              status: "success",
-              duration: 1500,
-              isClosable: true,
-            });
-            setIsOpenModal(false);
-            return;
-          })
-          .catch(() => {
-            throw new Error("err");
+    setSpinnerPayMercadoP(true);
+    setTimeout(() => {
+      setSpinnerPayMercadoP(false)
+    }, 2000);
+    try {
+      const response = await createPurchase({
+        state: "pendiente",
+        payment,
+        customer: customerId,
+      });
+      if (!response.data.ok) throw new Error("err");
+      if (payment == "MP") payMercadoPago(response.data.body.id);
+      setFlatFetch(false);
+      Promise.all(
+        carrito.map((product) => {
+          return createPurchasesProducts({
+            quantity: product.quantity!,
+            purchase: response.data.body.id,
+            product: product.id,
           });
-      } catch (error) {
-        toast({
-          title: "Error de server",
-          status: "error",
-          duration: 1500,
-          isClosable: true,
+        })
+      )
+        .then(() => {
+          setCarrito([]);
+          toast({
+            title: "Compra Exitosa",
+            description: "Disfruta tu compra",
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+          });
+          setIsOpenModal(false);
+          return;
+        })
+        .catch(() => {
+          throw new Error("err");
         });
-        return;
-      }
-    } else {
+    } catch (error) {
+      setSpinnerPayMercadoP(false)
       toast({
-        title: "Inicia sesion y añade pedidos para comprar",
+        title: "Error de server",
         status: "error",
         duration: 1500,
         isClosable: true,
       });
+      return;
     }
   };
 
@@ -279,9 +274,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     setFeatureAdmin(category);
   };
 
-  const styleCss = {
-    principal: "#FFC200",
-  };
 
   const contextValue: MyContextType = {
     categories,
@@ -289,7 +281,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     actualCategory,
     setActualCategory,
     handleClickCategory,
-    styleCss,
     carrito,
     setCarrito,
     handleAddToCarrito,
@@ -310,6 +301,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     setOpenHistory,
     flatFetch,
     setFlatFetch,
+    spinnerPayMercadoP,
   };
 
   return (

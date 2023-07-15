@@ -65,12 +65,13 @@ export default function PayButton() {
           setIsLoading(false);
           pay(payment, Number(response.data.body.id));
           setUser({ ...user!, customer: response.data.body });
+          localStorage.setItem("user", JSON.stringify({ ...user!, customer: response.data.body }))
         } else {
           throw new Error("Coudn't create customer");
         }
       } catch (error) {
         toast({
-          title: "Error of Server sorry.. .",
+          title: "Error de servidor",
           status: "error",
           duration: 1000,
           position: "top-left",
@@ -81,7 +82,7 @@ export default function PayButton() {
       }
     } else {
       toast({
-        title: "Valores Incorrectos .",
+        title: "Valores Incorrectos",
         status: "error",
         duration: 1000,
         position: "top-left",
