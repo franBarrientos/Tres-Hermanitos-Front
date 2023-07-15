@@ -28,7 +28,7 @@ export default function Sidebar() {
     <Box
       display={"flex"}
       flexDirection={"column"}
-      w={["full", "full", "60", "72"]}
+      w={["full", "full", "48", "56", "72"]}
       bg={"ly.900"}
     >
       {isMobile ? (
@@ -163,11 +163,11 @@ export default function Sidebar() {
               {user?.firstName?.toUpperCase()}
             </Text>
           </Text>
-          <Box mt={2}>
+          <Flex direction={"column"} alignItems={"center"} justifyContent={"center"} gap={2}>
             {categories?.map((categoria) => (
               <Categoria category={categoria} key={categoria.id} />
             ))}
-          </Box>
+          </Flex>
           {user ? (
             <>
               <Button

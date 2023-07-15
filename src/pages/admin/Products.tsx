@@ -34,14 +34,13 @@ export default function Products() {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
-  const { handleSubmit, register, getValues, setValue } = useForm();
+  const { handleSubmit, register, getValues } = useForm();
   const toast = useToast();
 
   const validateProduct = () => {
     const name: string = getValues("name").toString().trim();
     const description: string = getValues("description").toString().trim();
-    //    const img: string = getValues("img").toString().trim();
-    const img: File = getValues("img");
+    const img = getValues("img");
     const category: string = getValues("category").toString().trim();
     const price: string = getValues("price").toString().trim();
 
@@ -79,18 +78,8 @@ export default function Products() {
       setIsLoading(false);
       return false;
     }
-    /* if (img === "") {
-      toast({
-        title: "Ingrese una Imagen Valida",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
-      setIsLoading(false);
-      return false;
-    } */
-    if (!img) {
+
+    if (img.length < 1) {
       toast({
         title: "Ingrese una Imagen Valida",
         status: "error",
@@ -122,13 +111,16 @@ export default function Products() {
     const formData = new FormData();
     const values = getValues();
     Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, value);
+      if (key === "img") {
+        formData.append(key, value[0]);
+      } else {
+        formData.append(key, value);
+      }
     });
-
-    console.log(formData)
     try {
       const response = await apiClient.post("/product", formData, {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
@@ -214,14 +206,14 @@ export default function Products() {
           <ModalHeader>Crear</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form>
+            <form encType="multipart/form-data">
               <Heading mb={4}>Nuevo Producto</Heading>
               <FormControl>
                 <FormLabel>Nombre</FormLabel>
                 <Input
                   {...register("name")}
                   type="text"
-                  placeholder="Your product name"
+                  placeholder="Tu nombre del producto"
                   focusBorderColor="gray.600"
                   borderColor={"whiteAlpha.300"}
                   shadow={"xl"}
@@ -233,46 +225,24 @@ export default function Products() {
                 <Input
                   {...register("description")}
                   type="text"
-                  placeholder="Your description"
+                  placeholder="Tu description"
                   focusBorderColor="gray.600"
                   borderColor={"whiteAlpha.300"}
                   shadow={"xl"}
                   _placeholder={{ color: "gray.400" }}
                 />
               </FormControl>
-              {/*  <FormControl mt={4}>
-                <FormLabel>Imagen Url</FormLabel>
-                <Input
-                  {...register("img")}
-                  type="text"
-                  placeholder="Your url image"
-                  focusBorderColor="gray.600"
-                  borderColor={"whiteAlpha.300"}
-                  shadow={"xl"}
-                  _placeholder={{ color: "gray.400" }}
-                />
-              </FormControl> */}
 
               <FormControl mt={4}>
                 <FormLabel>Imagen</FormLabel>
-                <input
-                  type="file"
-                  {...register("img")}
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files ? e.target.files[0] : null;
-                    if (file) {
-                      setValue("img", file);
-                    }
-                  }}
-                />
+                <input type="file" {...register("img")} name="img" />
               </FormControl>
               <FormControl mt={4}>
                 <FormLabel>Categoria</FormLabel>
 
                 <Select
                   defaultValue={categories ? categories[0].id : 1}
-                  placeholder="Select category"
+                  placeholder="Tu categoria"
                   {...register("category")}
                 >
                   {categories?.map((category) => (
@@ -286,7 +256,7 @@ export default function Products() {
                 <Input
                   {...register("price")}
                   type="number"
-                  placeholder="Your price"
+                  placeholder="Tu precio"
                   focusBorderColor="gray.600"
                   borderColor={"whiteAlpha.300"}
                   shadow={"xl"}

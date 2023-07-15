@@ -44,7 +44,7 @@ export default function Home({ isAdmin = false }: props) {
         <Text fontSize={"2xl"} my={8}  color={"ly.400"}>
           Elija y Personalize su pedido
         </Text>
-        <SimpleGrid gap={5} justifyContent={"center"} columns={[1, 1, 2, 3, 4]}>
+        <SimpleGrid gap={5} justifyContent={"center"} columns={[1, 1, 2, 2, 3]}>
           {productos.map((producto: ProductInterface) => (
             <Producto producto={producto} key={producto.id} isAdmin={isAdmin} />
           ))}

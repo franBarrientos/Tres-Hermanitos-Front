@@ -11,8 +11,8 @@ export default function Resumen() {
   return isMobile ? null : (
     <Box
       h="100vh"
-      w={{ lg: "72", md: "56" }}
-      p={5}
+      py={5}
+      px={2}
       overflowY={"scroll"}
       display={"flex"}
       flexDirection={"column"}

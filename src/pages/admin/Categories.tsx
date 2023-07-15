@@ -18,6 +18,8 @@ import {
   useDisclosure,
   useToast,
   SimpleGrid,
+  Box,
+  Text,
 } from "@chakra-ui/react";
 import MenuMobile from "../../components/MenuMobile";
 import { useMediaQuery } from "react-responsive";
@@ -38,7 +40,7 @@ export default function Categories() {
   const onSubmitNewCategory = async () => {
     setIsLoading(true);
     const name: string = getValues("name").toString().trim();
-    const img: string = getValues("img").toString().trim();
+    const img = getValues("img");
     if (name === "") {
       toast({
         title: "Ingrese un Nombre Valido",
@@ -51,7 +53,7 @@ export default function Categories() {
       return;
     }
 
-    if (img === "") {
+    if (img.length < 1) {
       toast({
         title: "Ingrese una Imagen Valida",
         status: "error",
@@ -62,11 +64,21 @@ export default function Categories() {
       setIsLoading(false);
       return;
     }
-    const formData = getValues();    
+    const formData = new FormData();
+    const values = getValues();
+    Object.entries(values).forEach(([key, value]) => {
+      if (key === "img") {
+        formData.append(key, value[0]);
+      } else {
+        formData.append(key, value);
+      }
+    });
     try {
       setIsLoading(true);
       const response = await apiClient.post("/category", formData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       if (!response.data.ok) throw new Error("err");
       toast({
@@ -99,7 +111,6 @@ export default function Categories() {
           justifyContent={"space-between"}
           alignContent={"center"}
           pb={4}
-          
         >
           <MenuMobile />
           <Button
@@ -127,7 +138,24 @@ export default function Categories() {
         </Tabs>
       )}
 
-      <SimpleGrid gap={4} columns={[1, 2, 2, 2, 4]}>
+      <Flex justifyContent={"center"}>
+        <Box
+          boxShadow="0px 4px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
+          display="inline-block"
+          rounded={"2xl"}
+          py={2}
+          px={3}
+          color={"ly.700"}
+        >
+          <Text fontSize={"4xl"} fontWeight={"bold"} shadow={"2xl"}>
+            Categorias
+          </Text>
+        </Box>
+      </Flex>
+      <Text display={"block"} textAlign={"center"} fontSize={"2xl"} my={8} color={"ly.400"}>
+        Edita tus Categorias
+      </Text>
+      <SimpleGrid gap={1}  justifyContent={"center"} columns={[1, 1, 2, 2, 3]}>
         {categories?.map((category) => (
           <CategoryCard category={category} key={category.id} />
         ))}
@@ -138,32 +166,25 @@ export default function Categories() {
           <ModalHeader>Crear</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form>
+            <form  encType="multipart/form-data">
               <Heading mb={4}>Crear Nueva Categoria</Heading>
               <FormControl>
                 <FormLabel>Nombre</FormLabel>
                 <Input
                   {...register("name")}
                   type="text"
-                  placeholder="Your product name"
+                  placeholder="Tu nombre de categoria"
                   focusBorderColor="gray.600"
                   borderColor={"whiteAlpha.300"}
                   shadow={"xl"}
                   _placeholder={{ color: "gray.400" }}
                 />
               </FormControl>
+
               <FormControl mt={4}>
                 <FormLabel>Imagen</FormLabel>
-                <Input
-                  {...register("img")}
-                  type="text"
-                  placeholder="Your url image"
-                  focusBorderColor="gray.600"
-                  borderColor={"whiteAlpha.300"}
-                  shadow={"xl"}
-                  _placeholder={{ color: "gray.400" }}
-                />
-              </FormControl>{" "}
+                <input type="file" {...register("img")} name="img" />
+              </FormControl>
             </form>
           </ModalBody>
 

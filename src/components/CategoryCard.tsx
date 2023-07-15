@@ -25,6 +25,7 @@ import { CategoryInterface } from "../interfaces/category";
 import React, { useState } from "react";
 import apiClient from "../config/axiosClient";
 import useApp from "../hook/useApp";
+import { useForm } from "react-hook-form";
 
 type props = {
   category: CategoryInterface;
@@ -38,7 +39,7 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [editCategory, setEditCategory] = useState<CategoryInterface>(category);
   const toast = useToast();
-
+  const { register, getValues } = useForm();
   const { setChangeCategory, changeCategory } = useApp();
 
   const handleChangeCategory = (
@@ -65,10 +66,10 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
       category
     );
 
-    if (formData.name === "" || formData.img === "") {
+    if (formData.name === "") {
       setIsLoading(false);
       toast({
-        title: "Faltan Campos Porfavor completalos",
+        title: "Agrege un nombre Valido",
         status: "error",
         duration: 2000,
         position: "top-left",
@@ -76,12 +77,29 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
       });
       return;
     }
+
+    const img = getValues("img");
+    if (img && img.length > 0 && img[0]) {
+      formData.img = img;
+    }
+    const formDataa = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === "img") {
+        formDataa.append(key, value[0]);
+      } else {
+        formDataa.append(key, value);
+      }
+    });
     try {
       const response = await apiClient.put(
         `/category/${category.id}`,
-        formData,
+        formDataa,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: {
+            "Content-Type": "multipart/form-data",
+
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (!response.data.ok) throw new Error("err");
@@ -116,7 +134,8 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
       overflow="hidden"
       display={"flex"}
       justifyContent={"center"}
-      maxWidth={"96"}
+            maxW="sm"
+      
       boxShadow="2px 6px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
       bg={"ly.900"}
       color={"ly.700"}
@@ -149,19 +168,19 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
       <Modal isOpen={isOpen1} onClose={onClose1}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Edit</ModalHeader>
+          <ModalHeader>Editar</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form>
-              <Heading mb={4}>Edit Product</Heading>
+              <Heading mb={4}>Editar Categoria</Heading>
               <FormControl>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nombre</FormLabel>
                 <Input
                   type="text"
                   name="name"
                   onChange={handleChangeCategory}
                   value={editCategory.name}
-                  placeholder="Your product name"
+                  placeholder="Tu nombre de producto"
                   focusBorderColor="gray.600"
                   borderColor={"whiteAlpha.300"}
                   shadow={"xl"}
@@ -169,18 +188,8 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
                 />
               </FormControl>
               <FormControl mt={4}>
-                <FormLabel>Image</FormLabel>
-                <Input
-                  type="text"
-                  name="img"
-                  onChange={handleChangeCategory}
-                  value={editCategory.img}
-                  placeholder="Your image"
-                  focusBorderColor="gray.600"
-                  borderColor={"whiteAlpha.300"}
-                  shadow={"xl"}
-                  _placeholder={{ color: "gray.400" }}
-                />
+                <FormLabel>Imagen</FormLabel>
+                <input type="file" {...register("img")} name="img" />
               </FormControl>
             </form>
           </ModalBody>

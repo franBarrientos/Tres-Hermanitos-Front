@@ -15,6 +15,7 @@ import { getAllCategories } from "../api/category.api";
 import { createOrderMp, createPurchase } from "../api/purchase.api";
 import { createPurchasesProducts } from "../api/purchaseProduct";
 import { Navigate } from "react-router-dom";
+import apiClient from "../config/axiosClient";
 interface MyContextType {
   categories: CategoryInterface[] | null;
   setCategories: Dispatch<SetStateAction<CategoryInterface[] | null>>;
@@ -122,6 +123,35 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     } else {
       <Navigate to={"/"} />;
     }
+  }, []);
+
+  useEffect(() => {
+    const refreshToken = async () => {
+ 
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await apiClient.post("/refreshToken", {
+            token,
+          });
+          if(!response.data.ok)throw new Error("Expired")
+          console.log(response)
+          localStorage.setItem("token", response.data.body.token);
+        } catch (error) {
+          toast({
+            title: `Sesion expirada por favor inicie sesion de nuevo`,
+            status: "warning",
+            duration: 1500,
+            position: "top-left",
+            isClosable: true,
+          });
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          setUser(null)
+        }
+      }
+    };
+    refreshToken();
   }, []);
 
   const handleClickCategory = (id: number) => {

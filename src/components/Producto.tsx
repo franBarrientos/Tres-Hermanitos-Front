@@ -41,7 +41,7 @@ import useApp from "../hook/useApp";
 import { useState, useRef } from "react";
 import apiClient from "../config/axiosClient";
 import { releaseImgUrl } from "../helpers/cloudinaty.helper";
-
+import { useForm } from "react-hook-form";
 type productoProp = {
   producto: ProductInterface;
   key: number;
@@ -61,7 +61,7 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const [editProduct, setEditProduct] = useState<ProductInterface>(producto);
-
+  const { register, getValues } = useForm();
   const handleChangeProduct = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -81,11 +81,19 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
 
   const onSubmitEditProduct = async () => {
     setIsLoading(true);
-    const formData: {name?:string, description?:string, price?: string | number; category?: string | number, } = getDifferentFields(
-      editProduct,
-      producto
-    );
-    if(formData.description === "" || formData.price === "" || formData.name === "" || formData.category === ""){
+    const formData: {
+      name?: string;
+      description?: string;
+      price?: string | number;
+      category?: string | number;
+      img?: any;
+    } = getDifferentFields(editProduct, producto);
+    if (
+      formData.description === "" ||
+      formData.price === "" ||
+      formData.name === "" ||
+      formData.category === ""
+    ) {
       setIsLoading(false);
       toast({
         title: "Faltan Campos Porfavor completalos",
@@ -94,16 +102,32 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
         position: "top-left",
         isClosable: true,
       });
-      return
+      return;
     }
     if (formData.price) formData.price = Number(formData.price);
     if (formData.category) formData.category = Number(formData.category);
+    const img = getValues("img");
+    if (img && img.length > 0 && img[0]) {
+      formData.img = img;
+    }
+    const formDataa = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === "img") {
+        formDataa.append(key, value[0]);
+      } else {
+        formDataa.append(key, value);
+      }
+    });
+
     try {
       const response = await apiClient.put(
         `/product/${producto.id}`,
-        formData,
+        formDataa,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
       if (!response.data.ok) throw new Error("err");
@@ -316,19 +340,8 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
               </FormControl>
               <FormControl mt={4}>
                 <FormLabel>Imagen</FormLabel>
-                <Input
-                  type="text"
-                  name="img"
-                  onChange={handleChangeProduct}
-                  value={editProduct.img}
-                  placeholder="Your image"
-                  focusBorderColor="gray.600"
-                  borderColor={"whiteAlpha.300"}
-                  shadow={"xl"}
-                  _placeholder={{ color: "gray.400" }}
-                />
+                <input type="file" {...register("img")} name="img" />
               </FormControl>
-              
 
               <FormControl mt={4}>
                 <FormLabel>Categoria</FormLabel>
