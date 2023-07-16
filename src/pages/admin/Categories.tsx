@@ -16,7 +16,6 @@ import {
   ModalFooter,
   CircularProgress,
   useDisclosure,
-  useToast,
   SimpleGrid,
   Box,
   Text,
@@ -25,81 +24,47 @@ import MenuMobile from "../../components/MenuMobile";
 import { useMediaQuery } from "react-responsive";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import apiClient from "../../config/axiosClient";
 import useApp from "../../hook/useApp";
 import { CategoryCard } from "../../components/CategoryCard";
+import { createFormData } from "../../utils/validators";
+import { useToastResponses } from "../../hook/useToastResponses";
+import { createNewCategory } from "../../api/category.api";
 
 export default function Categories() {
   const { categories, setChangeCategory, changeCategory } = useApp();
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { handleSubmit, register, getValues } = useForm();
+  const { handleSubmit, register, getValues, reset } = useForm();
   const [isLoading, setIsLoading] = useState(false);
-  const toast = useToast();
+  const { error, success } = useToastResponses();
 
   const onSubmitNewCategory = async () => {
     setIsLoading(true);
     const name: string = getValues("name").toString().trim();
     const img = getValues("img");
     if (name === "") {
-      toast({
-        title: "Ingrese un Nombre Valido",
-        status: "error",
-        duration: 1000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Ingrese un Nombre Valido");
       setIsLoading(false);
       return;
     }
-
     if (img.length < 1) {
-      toast({
-        title: "Ingrese una Imagen Valida",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Ingrese una Imagen Valida");
       setIsLoading(false);
       return;
     }
-    const formData = new FormData();
-    const values = getValues();
-    Object.entries(values).forEach(([key, value]) => {
-      if (key === "img") {
-        formData.append(key, value[0]);
-      } else {
-        formData.append(key, value);
-      }
-    });
+    const formData = createFormData(getValues());
     try {
-      setIsLoading(true);
-      const response = await apiClient.post("/category", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      reset();
+      const response = await createNewCategory(formData);
       if (!response.data.ok) throw new Error("err");
-      toast({
-        title: `${response.data.body.name} categoria creada Exitomasamente`,
-        status: "success",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      success(`${response.data.body.name} categoria creada Exitomasamente`);
       setIsLoading(false);
       setChangeCategory(!changeCategory);
       onClose();
-    } catch (error) {
-      toast({
-        title: "Error de Servidor",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+    } catch (errorFromCatch) {
+      error("Error de Servidor");
       setIsLoading(false);
+      console.log(errorFromCatch);
     }
   };
 
@@ -152,21 +117,31 @@ export default function Categories() {
           </Text>
         </Box>
       </Flex>
-      <Text display={"block"} textAlign={"center"} fontSize={"2xl"} my={8} color={"ly.400"}>
+      <Text
+        display={"block"}
+        textAlign={"center"}
+        fontSize={"2xl"}
+        my={8}
+        color={"ly.400"}
+      >
         Edita tus Categorias
       </Text>
-      <SimpleGrid gap={1}  justifyContent={"center"} columns={[1, 1, 2, 2, 3]}>
-        {categories?.map((category) => (
-          <CategoryCard category={category} key={category.id} />
-        ))}
-      </SimpleGrid>
+
+      <Flex justifyContent={"center"}>
+        <SimpleGrid gap={5} columns={[1, 1, 2, 2, 3]}>
+          {categories?.map((category) => (
+            <CategoryCard category={category} key={category.id} />
+          ))}
+        </SimpleGrid>
+      </Flex>
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Crear</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form  encType="multipart/form-data">
+            <form encType="multipart/form-data">
               <Heading mb={4}>Crear Nueva Categoria</Heading>
               <FormControl>
                 <FormLabel>Nombre</FormLabel>
@@ -209,8 +184,6 @@ export default function Categories() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-      {/*Modal of Create */}
     </>
   );
 }

@@ -38,15 +38,30 @@ import {
 } from "@chakra-ui/react";
 import { ProductInterface } from "../interfaces/product";
 import useApp from "../hook/useApp";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import apiClient from "../config/axiosClient";
 import { releaseImgUrl } from "../helpers/cloudinaty.helper";
-import { useForm } from "react-hook-form";
+import {
+  createFormData,
+  getDifferentFields,
+  validateExistChangesToUpdate,
+} from "../utils/validators";
+import { useToastResponses } from "../hook/useToastResponses";
+import { CategoryInterface } from "../interfaces/category";
+import { updateProduct } from "../api/product.api";
 type productoProp = {
   producto: ProductInterface;
   key: number;
   isAdmin: boolean;
 };
+
+interface ProductForm {
+  img?: string | File | FileList;
+  category?: CategoryInterface | number | string;
+  name?: string;
+  description?: string;
+  price?: number | string;
+}
 
 export default function Producto({ producto, isAdmin = false }: productoProp) {
   const { handleAddToCarrito, categories } = useApp();
@@ -60,34 +75,50 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
   const cancelRef = useRef<HTMLButtonElement | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
-  const [editProduct, setEditProduct] = useState<ProductInterface>(producto);
-  const { register, getValues } = useForm();
+  const { error, success, warning } = useToastResponses();
+  const [editProduct, setEditProduct] = useState<ProductForm>({
+    category: producto.category,
+    description: producto.description,
+    img: producto.img,
+    name: producto.name,
+    price: producto.price,
+  });
+
+  useEffect(() => {
+    if (!isOpen1) {
+      setEditProduct({
+        category: producto.category,
+        description: producto.description,
+        img: producto.img,
+        name: producto.name,
+        price: producto.price,
+      });
+    }
+  }, [isOpen1, producto]);
+
   const handleChangeProduct = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setEditProduct({ ...editProduct, [e.target.name]: e.target.value });
-  };
-
-  function getDifferentFields(object1: any, object2: any) {
-    const result = Object.entries(object1).reduce((acc, [key, value]) => {
-      if (object2[key] !== value) {
-        return { ...acc, [key]: value };
+    if (e.target.type === "file") {
+      const fileInput = e.target as HTMLInputElement;
+      if (fileInput?.files?.length) {
+        const file = fileInput.files[0]; // Accedemos al archivo seleccionado
+        setEditProduct({ ...editProduct, img: file });
       }
-      return acc;
-    }, {});
-
-    return result;
-  }
+    } else {
+      setEditProduct({ ...editProduct, [e.target.name]: e.target.value });
+    }
+  };
 
   const onSubmitEditProduct = async () => {
     setIsLoading(true);
-    const formData: {
-      name?: string;
-      description?: string;
-      price?: string | number;
-      category?: string | number;
-      img?: any;
-    } = getDifferentFields(editProduct, producto);
+    const formData: ProductForm = getDifferentFields(editProduct, producto);
+
+    if (!validateExistChangesToUpdate(formData)) {
+      warning("No existen cambios por actualizar");
+      setIsLoading(false);
+      return;
+    }
     if (
       formData.description === "" ||
       formData.price === "" ||
@@ -95,62 +126,22 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
       formData.category === ""
     ) {
       setIsLoading(false);
-      toast({
-        title: "Faltan Campos Porfavor completalos",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Faltan Campos Porfavor completalos");
       return;
     }
     if (formData.price) formData.price = Number(formData.price);
     if (formData.category) formData.category = Number(formData.category);
-    const img = getValues("img");
-    if (img && img.length > 0 && img[0]) {
-      formData.img = img;
-    }
-    const formDataa = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key === "img") {
-        formDataa.append(key, value[0]);
-      } else {
-        formDataa.append(key, value);
-      }
-    });
 
+    const formDataa = createFormData(formData);
     try {
-      const response = await apiClient.put(
-        `/product/${producto.id}`,
-        formDataa,
-        {
-          
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
+      const response = await updateProduct(formDataa, producto.id);
       if (!response.data.ok) throw new Error("err");
-      toast({
-        title: "Changes Saved Successfuly",
-        status: "success",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      success("Changes Saved Successfuly");
       onClose1();
       setIsLoading(false);
       return;
-    } catch (error) {
-      toast({
-        title: "Invalid Values .",
-        description: "Ingrese a price valid.",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
-      setIsLoading(false);
+    } catch (errorFromCatch) {
+      error("Valores Invalidos"), setIsLoading(false);
       return;
     }
   };
@@ -340,14 +331,16 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
               </FormControl>
               <FormControl mt={4}>
                 <FormLabel>Imagen</FormLabel>
-                <input type="file" {...register("img")} name="img" />
+                <input type="file" onChange={handleChangeProduct} name="img" />
               </FormControl>
 
               <FormControl mt={4}>
                 <FormLabel>Categoria</FormLabel>
 
                 <Select
-                  defaultValue={editProduct.category.id || 1}
+                  defaultValue={
+                    (editProduct.category as ProductInterface).id || 1
+                  }
                   placeholder="Select category"
                   name="category"
                   onChange={handleChangeProduct}

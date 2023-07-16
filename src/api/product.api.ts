@@ -1,13 +1,9 @@
 import { AxiosResponse } from "axios";
 import apiClient from "../config/axiosClient";
 
-const prefix = "/category";
+const prefix = "/product";
 
-export const getAllCategories = (): Promise<AxiosResponse<any, any>> => {
-  return apiClient.get(prefix);
-};
-
-export const createNewCategory = (
+export const createNewProduct = (
   formData: FormData
 ): Promise<AxiosResponse<any, any>> => {
   return apiClient.post(prefix, formData, {
@@ -17,11 +13,11 @@ export const createNewCategory = (
     },
   });
 };
-export const updateCategory = (
+export const updateProduct = (
   formData: FormData,
   id:number
 ): Promise<AxiosResponse<any, any>> => {
-  return apiClient.put(`/category/${id}`, formData, {
+  return apiClient.put(`/product/${id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${localStorage.getItem("token")}`,

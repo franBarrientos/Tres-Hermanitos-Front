@@ -19,13 +19,17 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useToast,
 } from "@chakra-ui/react";
 import { CategoryInterface } from "../interfaces/category";
-import React, { useState } from "react";
-import apiClient from "../config/axiosClient";
+import React, { useEffect, useState } from "react";
 import useApp from "../hook/useApp";
-import { useForm } from "react-hook-form";
+import {
+  createFormData,
+  getDifferentFields,
+  validateExistChangesToUpdate,
+} from "../utils/validators";
+import { useToastResponses } from "../hook/useToastResponses";
+import { updateCategory } from "../api/category.api";
 
 type props = {
   category: CategoryInterface;
@@ -37,92 +41,63 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
     onClose: onClose1,
   } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
-  const [editCategory, setEditCategory] = useState<CategoryInterface>(category);
-  const toast = useToast();
-  const { register, getValues } = useForm();
+  const [editCategory, setEditCategory] = useState<{
+    name?: string;
+    img?: string | File;
+  }>({ name: category.name, img: category.img });
+  const { error, success, warning } = useToastResponses();
   const { setChangeCategory, changeCategory } = useApp();
+
+  useEffect(() => {
+    if (!isOpen1) {
+      // Si el modal se cierra, restablecer el estado con los valores originales
+      setEditCategory({ name: category.name, img: category.img });
+    }
+  }, [isOpen1, category]);
 
   const handleChangeCategory = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setEditCategory({ ...editCategory, [e.target.name]: e.target.value });
-  };
-
-  function getDifferentFields(object1: any, object2: any) {
-    const result = Object.entries(object1).reduce((acc, [key, value]) => {
-      if (object2[key] !== value) {
-        return { ...acc, [key]: value };
+    if (e.target.type === "file") {
+      const fileInput = e.target as HTMLInputElement;
+      if (fileInput?.files?.length) {
+        const file = fileInput.files[0]; // Accedemos al archivo seleccionado
+        setEditCategory({ ...editCategory, img: file });
       }
-      return acc;
-    }, {});
-
-    return result;
-  }
+    } else {
+      setEditCategory({ ...editCategory, [e.target.name]: e.target.value });
+    }
+  };
 
   const onSubmitEditCategory = async () => {
     setIsLoading(true);
-    const formData: { name?: string; img?: string } = getDifferentFields(
+    const formData: { name?: string; img?: string | File } = getDifferentFields(
       editCategory,
       category
     );
+    if (!validateExistChangesToUpdate(formData)) {
+      warning("No existen cambios por actualizar");
+      setIsLoading(false);
+      return;
+    }
 
     if (formData.name === "") {
       setIsLoading(false);
-      toast({
-        title: "Agrege un nombre Valido",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Agrege un nombre Valido");
       return;
     }
-
-    const img = getValues("img");
-    if (img && img.length > 0 && img[0]) {
-      formData.img = img;
-    }
-    const formDataa = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key === "img") {
-        formDataa.append(key, value[0]);
-      } else {
-        formDataa.append(key, value);
-      }
-    });
+    const formDataa = createFormData(formData);
     try {
-      const response = await apiClient.put(
-        `/category/${category.id}`,
-        formDataa,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await updateCategory(formDataa, category.id);
       if (!response.data.ok) throw new Error("err");
       setChangeCategory(!changeCategory);
-      toast({
-        title: "Changes Saved Successfuly",
-        status: "success",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      success("Cambios guardados correctamente");
       onClose1();
       setIsLoading(false);
       return;
-    } catch (error) {
-      toast({
-        title: "Invalid Values .",
-        description: "Ingrese a price valid.",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+    } catch (errorFromCatch) {
+      console.log(errorFromCatch);
+      error("Valores invalidos", "Intente de nuevo por favor");
       setIsLoading(false);
       return;
     }
@@ -134,8 +109,7 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
       overflow="hidden"
       display={"flex"}
       justifyContent={"center"}
-            maxW="sm"
-      
+      maxW="sm"
       boxShadow="2px 6px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
       bg={"ly.900"}
       color={"ly.700"}
@@ -189,7 +163,7 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
               </FormControl>
               <FormControl mt={4}>
                 <FormLabel>Imagen</FormLabel>
-                <input type="file" {...register("img")} name="img" />
+                <input type="file" onChange={handleChangeCategory} name="img" />
               </FormControl>
             </form>
           </ModalBody>

@@ -19,23 +19,24 @@ import {
   TabList,
   Tabs,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 import useApp from "../../hook/useApp";
-import apiClient from "../../config/axiosClient";
 import MenuMobile from "../../components/MenuMobile";
 import Home from "../home/Home";
+import { useToastResponses } from "../../hook/useToastResponses";
+import { createFormData } from "../../utils/validators";
+import { createNewProduct } from "../../api/product.api";
 
 export default function Products() {
   const { categories, handleClickCategory } = useApp();
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
-  const { handleSubmit, register, getValues } = useForm();
-  const toast = useToast();
+  const { handleSubmit, register, getValues, reset} = useForm();
+  const { error, success } = useToastResponses();
 
   const validateProduct = () => {
     const name: string = getValues("name").toString().trim();
@@ -45,61 +46,26 @@ export default function Products() {
     const price: string = getValues("price").toString().trim();
 
     if (name === "") {
-      toast({
-        title: "Ingrese un Nombre Valido",
-        status: "error",
-        duration: 1000,
-        position: "top-left",
-        isClosable: true,
-      });
-      setIsLoading(false);
+      error("Ingrese un Nombre Valido");
       return false;
     }
 
     if (description === "") {
-      toast({
-        title: "Ingrese una Descripcion Valida",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
-      setIsLoading(false);
+      error("Ingrese una Descripcion Valida");
       return false;
     }
     if (category === "") {
-      toast({
-        title: "Ingrese una Categoria Valida",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
-      setIsLoading(false);
+      error("Ingrese una Categoria Valida");
       return false;
     }
 
     if (img.length < 1) {
-      toast({
-        title: "Ingrese una Imagen Valida",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
-      setIsLoading(false);
+      error("Ingrese una Imagen Valida");
       return false;
     }
 
     if (price === "") {
-      toast({
-        title: "Ingrese una Precio Valido",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
-      setIsLoading(false);
+      error("Ingrese una Precio Valido");
       return false;
     }
     return true;
@@ -107,44 +73,21 @@ export default function Products() {
 
   const onSubmitNewProduct = async () => {
     setIsLoading(true);
-    if (!validateProduct()) return;
-    const formData = new FormData();
-    const values = getValues();
-    Object.entries(values).forEach(([key, value]) => {
-      if (key === "img") {
-        formData.append(key, value[0]);
-      } else {
-        formData.append(key, value);
-      }
-    });
+    if (!validateProduct()) {
+      setIsLoading(false);
+      return;
+    }
+    const formData = createFormData(getValues());
     try {
-      const response = await apiClient.post("/product", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (response.data.ok) {
-        toast({
-          title: `${response.data.body.name} creado correctamente`,
-          status: "success",
-          duration: 2000,
-          position: "top-left",
-          isClosable: true,
-        });
-        setIsLoading(false);
-        onClose();
-      } else {
-        throw new Error("err");
-      }
-    } catch (error) {
-      toast({
-        title: "Error de Servidor",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      reset();
+      const response = await createNewProduct(formData);
+      if (!response.data.ok) throw new Error("err");
+      success(`${response.data.body.name} creado correctamente`)
+      setIsLoading(false);
+      onClose();
+    } catch (errorFromCatch) {
+      console.log(errorFromCatch)
+      error("Error de Servidor")
       setIsLoading(false);
     }
   };
@@ -225,7 +168,7 @@ export default function Products() {
                 <Input
                   {...register("description")}
                   type="text"
-                  placeholder="Tu description"
+                  placeholder="Tu descripcion"
                   focusBorderColor="gray.600"
                   borderColor={"whiteAlpha.300"}
                   shadow={"xl"}
