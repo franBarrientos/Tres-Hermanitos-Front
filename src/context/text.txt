@@ -1,0 +1,17 @@
+export const AppContext = createContext<MyContextType>({
+  categories: [],
+  actualCategory: { id: 0, img: "", name: "" },
+  setActualCategory: () => {},
+  handleClickCategory: () => {},
+  styleCss: { principal: "" },
+  carrito: [],
+  setCarrito: () => {},
+  handleAddToCarrito: () => {},
+  isOpenModal: false,
+  setIsOpenModal: () => {},
+  pay: () => Promise<void | undefined>,
+  user: null,
+  setUser: () => {},
+  handleEditProductOfCarrito: () => {},
+  handleRemoveProductFromCarrito: () => {},
+});

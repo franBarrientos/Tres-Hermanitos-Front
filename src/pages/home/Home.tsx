@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import useSWR, { SWRResponse, mutate } from "swr";
 import apiClient from "../../config/axiosClient";
 import useApp from "../../hook/useApp";
 import {
@@ -11,22 +11,57 @@ import {
 import Producto from "../../components/Producto";
 import { ProductInterface } from "../../interfaces/product";
 import ModalHistory from "./ModalHistory";
-
+import { useState, useEffect } from "react";
+import { Paginacion } from "../../components/Paginacion";
 interface props {
   isAdmin?: boolean;
 }
 
 export default function Home({ isAdmin = false }: props) {
-  const fetcher = () => apiClient("/product").then((data) => data.data);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [isLoadingFetch, setIsLoadingFetch] = useState<boolean>(false);
   const { actualCategory, spinnerPayMercadoP } = useApp();
-  const { data, isLoading } = useSWR("/product", fetcher, {
-    refreshInterval: 1000,
-  });
-  if (isLoading) return "Cargando...";
-  const productos: ProductInterface[] = data.body.filter(
-    (producto: ProductInterface) => producto.category.id === actualCategory!.id
+
+  const fetcher = async (url: string) => {
+    const response = await apiClient(url);
+    setIsLoadingFetch(false);
+    setTotalPages(response.data.body.totalPages);
+    return response.data;
+  };
+
+  const { data, isLoading, error }: SWRResponse = useSWR(
+    `/product?skip=${currentPage}&&category=${actualCategory?.id}`,
+    fetcher,
+    {
+      refreshInterval: 1000,
+    }
   );
-  //return mientras espera los datos de axios
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [actualCategory]);
+
+  if (isLoading) {
+    return (
+      <CircularProgress
+        isIndeterminate
+        color="green.500"
+        size="120px"
+        position="absolute"
+        top="50%"
+        left="50%"
+        transform="translate(-50%, -50%)"
+      />
+    );
+  }
+  if (error)
+    return (
+      <Text color="ly.700" textAlign={"center"} fontSize={"2xl"}>
+        Ups! Algo ocurrio en el servidor...
+      </Text>
+    );
+  const productos: ProductInterface[] = data?.body?.products || [];
   return (
     <>
       <Flex
@@ -57,6 +92,13 @@ export default function Home({ isAdmin = false }: props) {
           ))}
         </SimpleGrid>
       </Flex>
+      <Paginacion
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        isLoadingFetch={isLoadingFetch}
+        setIsLoadingFetch={setIsLoadingFetch}
+        totalPages={totalPages}
+      />
       <ModalHistory />
       {spinnerPayMercadoP && (
         <CircularProgress
