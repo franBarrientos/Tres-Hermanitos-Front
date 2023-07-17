@@ -18,7 +18,7 @@ import MenuMobile from "./MenuMobile";
 export default function SideBarAdmin() {
   const { user, categoriesAdmin } = useApp();
   const { logout } = useAuth();
-  const isMobile = useMediaQuery({ maxWidth: 768 });
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
 
   return (

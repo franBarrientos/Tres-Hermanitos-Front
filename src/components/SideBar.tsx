@@ -21,7 +21,7 @@ export default function Sidebar() {
   const { categories, setIsOpenModal, user, setOpenHistory, carrito } =
     useApp();
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
-  const isMobile = useMediaQuery({ maxWidth: 768 });
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const { logout } = useAuth();
   const navigate = useNavigate();
   return (
