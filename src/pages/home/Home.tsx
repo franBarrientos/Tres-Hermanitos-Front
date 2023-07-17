@@ -1,4 +1,4 @@
-import useSWR, { SWRResponse, mutate } from "swr";
+import useSWR, { SWRResponse } from "swr";
 import apiClient from "../../config/axiosClient";
 import useApp from "../../hook/useApp";
 import {
