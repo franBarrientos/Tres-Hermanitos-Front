@@ -10,13 +10,12 @@ import {
   List,
   Box,
   Flex,
-  Button,
-  CircularProgress,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import useSWR from "swr";
 import apiClient from "../../config/axiosClient";
 import { useState } from "react";
+import { Paginacion } from "../../components/Paginacion";
 
 export const Purchases = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -104,42 +103,13 @@ export const Purchases = () => {
           );
         })}
       </SimpleGrid>
-      {isLoadingFetch ? (
-        <Flex my={5} justifyContent={"center"}>
-          <CircularProgress isIndeterminate color="green.300" />
-        </Flex>
-      ) : (
-        <Flex justifyContent={"center"} gap={5} my={5}>
-          <Button
-            bgColor={"ly.700"}
-            _hover={{
-              bg: "ly.800",
-              color: "ly.400",
-            }}
-            isDisabled={currentPage < 2}
-            onClick={() => {
-              setIsLoadingFetch(true);
-              setCurrentPage(currentPage - 1);
-            }}
-          >
-            Anterior
-          </Button>
-          <Button
-            bgColor={"ly.700"}
-            _hover={{
-              bg: "ly.800",
-              color: "ly.400",
-            }}
-            onClick={() => {
-              setIsLoadingFetch(true);
-              setCurrentPage(currentPage + 1);
-            }}
-            isDisabled={currentPage === totalPages}
-          >
-            Siguiente
-          </Button>
-        </Flex>
-      )}
+      <Paginacion
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          isLoadingFetch={isLoadingFetch}
+          setIsLoadingFetch={setIsLoadingFetch}
+          totalPages={totalPages}
+        />
     </Box>
   );
 };

@@ -71,6 +71,7 @@ export default function Home({ isAdmin = false }: props) {
         px={5}
         color={"ly.700"}
         position={"relative"}
+        justifyContent={"space-between"}
       >
         <Box
           boxShadow="0px 4px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
@@ -86,19 +87,25 @@ export default function Home({ isAdmin = false }: props) {
         <Text fontSize={"2xl"} my={8} color={"ly.400"}>
           Elija y Personalize su pedido
         </Text>
-        <SimpleGrid gap={5} justifyContent={"center"} columns={[1, 1, 2, 2, 3]}>
+        <SimpleGrid
+          gap={5}
+          mb={5}
+          justifyContent={"center"}
+          columns={[1, 1, 2, 2, 3]}
+        >
           {productos.map((producto: ProductInterface) => (
             <Producto producto={producto} key={producto.id} isAdmin={isAdmin} />
           ))}
         </SimpleGrid>
+
+        <Paginacion
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          isLoadingFetch={isLoadingFetch}
+          setIsLoadingFetch={setIsLoadingFetch}
+          totalPages={totalPages}
+        />
       </Flex>
-      <Paginacion
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        isLoadingFetch={isLoadingFetch}
-        setIsLoadingFetch={setIsLoadingFetch}
-        totalPages={totalPages}
-      />
       <ModalHistory />
       {spinnerPayMercadoP && (
         <CircularProgress

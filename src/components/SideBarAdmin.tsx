@@ -65,7 +65,7 @@ export default function SideBarAdmin() {
                           logout();
                         }}
                       >
-                        Logout
+                        Cerrar Sesion
                       </MenuItem>
                     </MenuList>
                   </Menu>
