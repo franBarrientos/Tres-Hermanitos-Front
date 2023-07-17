@@ -10,18 +10,27 @@ import {
   List,
   Box,
   Flex,
+  Button,
+  CircularProgress,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import useSWR from "swr";
 import apiClient from "../../config/axiosClient";
+import { useState } from "react";
 
 export const Purchases = () => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [isLoadingFetch, setIsLoadingFetch] = useState<boolean>(false);
   const fetcher = async () => {
     try {
-      const response = await apiClient("/purchase");
+      const response = await apiClient(`/purchase?skip=${currentPage}`);
       if (!response.data.ok) throw new Error("err");
+      setTotalPages(response.data.body.totalPages);
+      setIsLoadingFetch(false);
       return response.data;
     } catch (error) {
+      setIsLoadingFetch(false);
       throw new Error("Err");
     }
   };
@@ -41,7 +50,7 @@ export const Purchases = () => {
   return (
     <Box justifyContent={"center"}>
       <SimpleGrid mt={10} gap={4} columns={[1, 2, 2, 3, 5]}>
-        {data.body.map((purchase: any) => {
+        {data.body.purchases.map((purchase: any) => {
           return (
             <Card
               minH={"md"}
@@ -65,15 +74,16 @@ export const Purchases = () => {
               </CardHeader>
               <CardBody flex={1}>
                 <Heading size="md">Productos</Heading>
-                <List spacing={3} maxHeight={"64"}  overflowY={"auto"}>
+                <List spacing={3} maxHeight={"64"} overflowY={"auto"}>
                   {purchase.purchasesProducts.length > 0 ? (
                     purchase.purchasesProducts.map((product: any) => {
                       return (
                         <ListItem pr={2}>
                           <Flex justifyContent={"flex-start"}>
                             <ListIcon as={CheckIcon} color="green.500" />
-                            <Text color={"ly.400"}>{product.product.name}
-                            <span>{product.quantity} </span>
+                            <Text color={"ly.400"}>
+                              {product.product.name}
+                              <span>{product.quantity} </span>
                             </Text>
                           </Flex>
                         </ListItem>
@@ -94,6 +104,42 @@ export const Purchases = () => {
           );
         })}
       </SimpleGrid>
+      {isLoadingFetch ? (
+        <Flex my={5} justifyContent={"center"}>
+          <CircularProgress isIndeterminate color="green.300" />
+        </Flex>
+      ) : (
+        <Flex justifyContent={"center"} gap={5} my={5}>
+          <Button
+            bgColor={"ly.700"}
+            _hover={{
+              bg: "ly.800",
+              color: "ly.400",
+            }}
+            isDisabled={currentPage < 2}
+            onClick={() => {
+              setIsLoadingFetch(true);
+              setCurrentPage(currentPage - 1);
+            }}
+          >
+            Anterior
+          </Button>
+          <Button
+            bgColor={"ly.700"}
+            _hover={{
+              bg: "ly.800",
+              color: "ly.400",
+            }}
+            onClick={() => {
+              setIsLoadingFetch(true);
+              setCurrentPage(currentPage + 1);
+            }}
+            isDisabled={currentPage === totalPages}
+          >
+            Siguiente
+          </Button>
+        </Flex>
+      )}
     </Box>
   );
 };
