@@ -20,7 +20,7 @@ export const Paginacion: React.FC<props> = ({
       <CircularProgress isIndeterminate color="green.300" />
     </Flex>
   ) : (
-    <Flex justifyContent={"center"} gap={5} my={5}>
+    <Flex justifyContent={"center"} gap={5} my={20} >
       <Button
         bgColor={"ly.700"}
         _hover={{

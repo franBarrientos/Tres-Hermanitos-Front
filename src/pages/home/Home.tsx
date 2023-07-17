@@ -89,7 +89,6 @@ export default function Home({ isAdmin = false }: props) {
         </Text>
         <SimpleGrid
           gap={5}
-          mb={5}
           justifyContent={"center"}
           columns={[1, 1, 2, 2, 3]}
         >
