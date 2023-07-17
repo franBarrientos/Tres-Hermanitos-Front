@@ -73,9 +73,11 @@ export default function Categories() {
       {isMobile ? (
         <Flex
           shadow={"2xl"}
-          justifyContent={"space-between"}
+          justifyContent={"flex-start"}
           alignContent={"center"}
           pb={4}
+          gap={5}
+
         >
           <MenuMobile />
           <Button
