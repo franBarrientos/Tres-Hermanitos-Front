@@ -49,22 +49,22 @@ interface MyContextType {
 const categoriesAdmin: CategoryInterface[] = [
   {
     id: 1,
-    img: "https://res.cloudinary.com/dacgvqpeg/image/upload/v1688648111/3309960_synkq9.png",
+    img: "https://res.cloudinary.com/dacgvqpeg/image/upload/w_1000,ar_1:1,c_fill,g_auto,f_webp/v1688648111/3309960_synkq9.png",
     name: "Estadisticas",
   },
   {
     id: 2,
-    img: "https://www.damiancolombo.com/assets/images/productos/version/AYG0062BIG1.webp",
+    img: "https://res.cloudinary.com/dkkd5eszg/image/upload/w_1000,ar_1:1,c_fill,g_auto,f_webp/v1689558498/AYG0062BIG1_lmmx2d.jpg",
     name: "Productos",
   },
   {
     id: 3,
-    img: "https://res.cloudinary.com/dacgvqpeg/image/upload/v1688648259/images_ffrrid.jpg",
+    img: "https://res.cloudinary.com/dacgvqpeg/image/upload/w_1000,ar_1:1,c_fill,g_auto,f_webp/v1688648259/images_ffrrid.jpg",
     name: "Categorias",
   },
   {
     id: 4,
-    img: "https://res.cloudinary.com/dacgvqpeg/image/upload/v1688648341/images_vs2byy.png",
+    img: "https://res.cloudinary.com/dacgvqpeg/image/upload/w_1000,ar_1:1,c_fill,g_auto,f_webp/v1688648341/images_vs2byy.png",
     name: "Ventas",
   },
 ];
