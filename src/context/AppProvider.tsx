@@ -48,11 +48,6 @@ interface MyContextType {
 
 const categoriesAdmin: CategoryInterface[] = [
   {
-    id: 1,
-    img: "https://res.cloudinary.com/dacgvqpeg/image/upload/w_1000,ar_1:1,c_fill,g_auto,f_webp/v1688648111/3309960_synkq9.png",
-    name: "Estadisticas",
-  },
-  {
     id: 2,
     img: "https://res.cloudinary.com/dkkd5eszg/image/upload/w_1000,ar_1:1,c_fill,g_auto,f_webp/v1689558498/AYG0062BIG1_lmmx2d.jpg",
     name: "Productos",
@@ -67,6 +62,11 @@ const categoriesAdmin: CategoryInterface[] = [
     img: "https://res.cloudinary.com/dacgvqpeg/image/upload/w_1000,ar_1:1,c_fill,g_auto,f_webp/v1688648341/images_vs2byy.png",
     name: "Ventas",
   },
+  {
+    id: 1,
+    img: "https://res.cloudinary.com/dacgvqpeg/image/upload/w_1000,ar_1:1,c_fill,g_auto,f_webp/v1688648111/3309960_synkq9.png",
+    name: "Estadisticas",
+  }
 ];
 
 export const AppContext = createContext<MyContextType>({} as MyContextType);
