@@ -81,7 +81,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   const [categories, setCategories] = useState<CategoryInterface[] | null>([]);
   const [carrito, setCarrito] = useState<ProductInterface[] | []>([]);
   const [actualCategory, setActualCategory] = useState<CategoryInterface>({
-    id: 0,
+    id: 1,
     img: "",
     name: "",
   });
