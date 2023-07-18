@@ -50,7 +50,7 @@ export const Purchases = () => {
 
   return (
     <Box justifyContent={"center"}>
-      <SimpleGrid mt={10} gap={4} columns={[1, 2, 2, 3, 5]}>
+      <SimpleGrid mt={10} gap={4} columns={[1, 2, 2, 3, 4]}>
         {data.body.purchases.map((purchase: any) => {
           return (
             <Card
