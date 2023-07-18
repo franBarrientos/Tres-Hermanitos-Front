@@ -70,8 +70,8 @@ export const Purchases = () => {
                 <Heading size="sm">
                   Correo: {purchase.customer.user.email}
                 </Heading>
-                <Heading size="md">Estado Compra: {purchase.state}</Heading>
-                <Heading size="md">Pago: {purchase.payment}</Heading>
+                <Heading size="md">Estado de Compra: {purchase.state == "paid" ? "Pagado" : purchase.state}</Heading>
+                <Heading size="md">Pago: {purchase.payment == "MP" ? "Mercado Pago" : "Efectivo"}</Heading>
               </CardHeader>
               <CardBody>
                 <Heading size="md">Productos</Heading>
@@ -107,8 +107,8 @@ export const Purchases = () => {
                 <Heading size="md">
                   Fecha: {formatDate(purchase.createdAt)}
                 </Heading>
-                <Stack direction={"column"}  alignItems={"center"} spacing={1}> 
-                  <Heading size="md">💵 Total: </Heading>
+                <Stack direction={"column"} w={"full"} justifyContent={"center"}  alignItems={"center"} spacing={1}> 
+                  <Heading size="md"> 💵 Total: </Heading>
                   <Heading size={"md"}> ${purchase.totalPurchase}</Heading>
                 </Stack>
               </Flex>

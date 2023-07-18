@@ -32,7 +32,7 @@ export const CardHistory: React.FC<PurchaseInterface> = ({
           <CardBody>
             <Heading size="md">Nro de Compra: {id}</Heading>
             <Heading size="md">
-              Estado: {state == "paid" ? "Pagado" : state}
+              Estado de Compra: {state == "paid" ? "Pagado" : state}
             </Heading>
             <Heading size="md">Productos: </Heading>
             <UnorderedList>
