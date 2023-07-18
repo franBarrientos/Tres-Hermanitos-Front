@@ -184,7 +184,7 @@ export default function Products() {
                 <FormLabel>Categoria</FormLabel>
 
                 <Select
-                  defaultValue={categories ? categories[0].id : 1}
+                  defaultValue={1}
                   placeholder="Tu categoria"
                   {...register("category")}
                 >
