@@ -22,7 +22,10 @@ export default function SideBarAdmin() {
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
 
   return (
-    <Flex flexDirection={"column"} w={["full", "full", "56", "60", "72"]}>
+    <Flex flexDirection={"column"} 
+    w={["full", "full", "56", "60"]}
+
+    >
       {isMobile ? (
         <>
           <Flex justifyContent={"space-evenly"} alignItems={"flex-start"}>
