@@ -176,7 +176,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
       setCarrito([...carrito, product]);
       toast({
         title: `${product.name} Añadido al Carrito`,
-        description: "Added succesfully",
         status: "success",
         duration: 1500,
         position: "top-left",

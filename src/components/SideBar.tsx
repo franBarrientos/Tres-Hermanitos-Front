@@ -28,7 +28,7 @@ export default function Sidebar() {
     <Box
       display={"flex"}
       flexDirection={"column"}
-      w={["full", "full", "48", "56"]}
+      w={["full", "full", "56", "60"]}
       bg={"ly.900"}
     >
       {isMobile ? (
