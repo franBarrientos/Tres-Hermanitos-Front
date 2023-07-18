@@ -8,5 +8,5 @@ export interface PurchaseInterface {
   customer: CustomerInterface | number;
   purchasesProducts?: PurchasesProductsInterface[];
   totalPurchase?:number;
-  createdAt:string;
+  createdAt?:string;
 }

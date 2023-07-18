@@ -57,7 +57,7 @@ export const CardHistory: React.FC<PurchaseInterface> = ({
               Pago: {payment == "MP" ? "Mercado Pago" : "Efectivo"}
             </Heading>
             <Heading size="md">
-              Fecha: {formatDate(createdAt)}
+              Fecha: {formatDate(createdAt || "")}
             </Heading>
             <Heading mt={1} size="md">💵 Total: ${totalPurchase}</Heading>
           </CardBody>
