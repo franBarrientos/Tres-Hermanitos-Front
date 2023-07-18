@@ -32,14 +32,6 @@ export default function ModalCarrito() {
       <ModalContent bg={"ly.800"}>
         <ModalCloseButton />
         <ModalBody my={4}>
-          {/* <Text
-            fontSize={"2xl"}
-            textAlign={"center"}
-            fontWeight={"bold"}
-            mb={10}
-          >
-            Carrito
-          </Text> */}
           <Box
             boxShadow="0px 4px 10px rgba(254, 189, 87, 0.5)"
             display="inline-block"
