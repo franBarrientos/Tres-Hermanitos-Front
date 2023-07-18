@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { PurchaseInterface } from "../../interfaces/purchase";
 import { ProductInterface } from "../../interfaces/product";
+import { formatDate } from "../../utils/dates";
 
 export const CardHistory: React.FC<PurchaseInterface> = ({
   payment,
@@ -16,6 +17,7 @@ export const CardHistory: React.FC<PurchaseInterface> = ({
   id,
   purchasesProducts,
   totalPurchase,
+  createdAt
 }) => {
   return (
     <>
@@ -53,6 +55,9 @@ export const CardHistory: React.FC<PurchaseInterface> = ({
             </UnorderedList>
             <Heading size="md">
               Pago: {payment == "MP" ? "Mercado Pago" : "Efectivo"}
+            </Heading>
+            <Heading size="md">
+              Fecha: {formatDate(createdAt)}
             </Heading>
             <Heading mt={1} size="md">💵 Total: ${totalPurchase}</Heading>
           </CardBody>

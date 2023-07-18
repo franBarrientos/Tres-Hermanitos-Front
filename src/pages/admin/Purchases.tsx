@@ -10,12 +10,14 @@ import {
   List,
   Box,
   Flex,
+  Stack,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import useSWR from "swr";
 import apiClient from "../../config/axiosClient";
 import { useState } from "react";
 import { Paginacion } from "../../components/Paginacion";
+import { formatDate } from "../../utils/dates";
 
 export const Purchases = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -71,7 +73,7 @@ export const Purchases = () => {
                 <Heading size="md">Estado Compra: {purchase.state}</Heading>
                 <Heading size="md">Pago: {purchase.payment}</Heading>
               </CardHeader>
-              <CardBody flex={1}>
+              <CardBody>
                 <Heading size="md">Productos</Heading>
                 <List spacing={3} maxHeight={"64"} overflowY={"auto"}>
                   {purchase.purchasesProducts.length > 0 ? (
@@ -96,20 +98,31 @@ export const Purchases = () => {
                   )}
                 </List>{" "}
               </CardBody>
-              <Heading textAlign={"center"} size="md">
-                💵 Total: {purchase.totalPurchase}
-              </Heading>
+              <Flex
+                justifyContent={"space-between"}
+                w={"full"}
+                p={6}
+                alignItems={"center"}
+              >
+                <Heading size="md">
+                  Fecha: {formatDate(purchase.createdAt)}
+                </Heading>
+                <Stack direction={"column"}  alignItems={"center"} spacing={1}> 
+                  <Heading size="md">💵 Total: </Heading>
+                  <Heading size={"md"}> ${purchase.totalPurchase}</Heading>
+                </Stack>
+              </Flex>
             </Card>
           );
         })}
       </SimpleGrid>
       <Paginacion
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          isLoadingFetch={isLoadingFetch}
-          setIsLoadingFetch={setIsLoadingFetch}
-          totalPages={totalPages}
-        />
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        isLoadingFetch={isLoadingFetch}
+        setIsLoadingFetch={setIsLoadingFetch}
+        totalPages={totalPages}
+      />
     </Box>
   );
 };
