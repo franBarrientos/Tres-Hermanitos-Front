@@ -13,7 +13,8 @@ export default function Resumen() {
       h="100vh"
       py={5}
       px={2}
-      overflowY={"scroll"}
+      overflowY={"auto"}
+      overflowX={"hidden"}
       display={"flex"}
       flexDirection={"column"}
       alignItems={"center"}

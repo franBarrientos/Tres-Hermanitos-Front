@@ -6,7 +6,6 @@ import {
   FormLabel,
   Heading,
   Input,
-  useToast,
   CircularProgress,
   Text,
 } from "@chakra-ui/react";
@@ -16,48 +15,25 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../hook/useAuth";
 import { GoogleLogin } from "@react-oauth/google";
 import apiClient from "../../config/axiosClient";
+import { useToastResponses } from "../../hook/useToastResponses";
 
 function App() {
-  const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, register, getValues } = useForm();
   const { login } = useAuth();
-  /* "firstName":"fran",
-"lastName":"barrientos",
-	"password":"123",	
-	"email":"correo1@correo.com",
-		"city": "corrientes",
-	"role":"ADMIN",
-	"province":"tucuman",
-	"age":19 
-  */
+  const { error } = useToastResponses();
 
   const handleGoogleLoginSuccess = async (response: any) => {
     try {
       const responseBackend = await apiClient.post("/google", response);
-      login(null, null, responseBackend)
-    
-    } catch (error) {
-      console.log(error)
-      toast({
-        title: "Error on Google Sign",
-        status: "error",
-        duration: 1000,
-        position: "top-left",
-        isClosable: true,
-      });
+      login(null, null, responseBackend);
+    } catch (errorFromCatch) {
+      console.log(error);
+      error("Error on Google Sign");
     }
-    // Aquí puedes manejar la respuesta exitosa del inicio de sesión de Google
   };
   const handleGoogleLoginError = () => {
-    toast({
-      title: "Error on Google Sign",
-      status: "error",
-      duration: 1000,
-      position: "top-left",
-      isClosable: true,
-    });
-    // Aquí puedes manejar la respuesta exitosa del inicio de sesión de Google
+    error("Error on Google Sign");
   };
 
   const validatePasswordAndEmail = () => {
@@ -65,27 +41,12 @@ function App() {
     const password: string = getValues("password").toString().trim();
 
     if (email === "") {
-      toast({
-        title: "Invalid Values .",
-        description: "Insert an email valid.",
-        status: "error",
-        duration: 1000,
-        position: "top-left",
-        isClosable: true,
-      });
-      setIsLoading(false);
+      error("Valores Invalidos",  "Ingrese un email"), setIsLoading(false);
       return false;
     }
 
     if (password === "") {
-      toast({
-        title: "Invalid Values .",
-        description: "Ingrese a password valid.",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Valores Invalidos", "Ingrese una contraseña valida");
       setIsLoading(false);
       return false;
     }
@@ -106,7 +67,7 @@ function App() {
       pb={{ base: 5, md: 10 }}
       pt={{ base: 5, md: 10 }}
       px={{ base: 8, md: 12 }}
-      mb={8}  
+      mb={8}
       bg={"ly.800"}
       color={"ly.400"}
       borderRadius="md"
@@ -117,9 +78,6 @@ function App() {
         onSuccess={handleGoogleLoginSuccess}
         onError={handleGoogleLoginError}
       />
-      {/*    <Button onClick={() => infoUser()}>
-        
-      </Button> */}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt={2}>

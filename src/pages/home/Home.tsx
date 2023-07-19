@@ -14,9 +14,12 @@ import ModalHistory from "./ModalHistory";
 import { useState, useEffect } from "react";
 import { Paginacion } from "../../components/Paginacion";
 import { modalesRX } from "../../helpers/subjectsRx.helper";
+
 interface props {
   isAdmin?: boolean;
 }
+
+
 
 export default function Home({ isAdmin = false }: props) {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -64,6 +67,7 @@ export default function Home({ isAdmin = false }: props) {
         size="120px"
         position="absolute"
         top="50%"
+  
         left="50%"
         transform="translate(-50%, -50%)"
       />

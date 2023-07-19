@@ -6,7 +6,6 @@ import {
   FormLabel,
   Heading,
   Input,
-  useToast,
   CircularProgress,
   Text,
 } from "@chakra-ui/react";
@@ -14,12 +13,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../hook/useAuth";
+import { useToastResponses } from "../../hook/useToastResponses";
 
 function Register() {
-  const toast = useToast();
+  const { error } = useToastResponses();
   const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, register, getValues } = useForm();
-  const { register:registerAuth } = useAuth();
+  const { register: registerAuth } = useAuth();
 
   const validatePasswordAndEmail = () => {
     const email: string = getValues("email").toString().trim();
@@ -30,89 +30,39 @@ function Register() {
     const province: string = getValues("province").toString().trim();
     const age: string = getValues("age").toString().trim();
 
-
     if (email === "") {
-      toast({
-        title: "Invalid Values .",
-        description: "Insert an email valid.",
-        status: "error",
-        duration: 1000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Invalid Values", "Ingrese un email valido");
       setIsLoading(false);
       return false;
     }
 
     if (password === "") {
-      toast({
-        title: "Invalid Values .",
-        description: "Ingrese a password valid.",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Invalid Values", "Ingrese una contraseña valida");
       setIsLoading(false);
       return false;
     }
     if (firstName === "") {
-      toast({
-        title: "Invalid Values .",
-        description: "Ingrese a name valid.",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Invalid Values", "Ingrese un nombre valido");
       setIsLoading(false);
       return false;
     }
     if (lastName === "") {
-      toast({
-        title: "Invalid Values .",
-        description: "Ingrese a lastName valid.",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Invalid Values", "Ingrese un apellido valido");
       setIsLoading(false);
       return false;
     }
     if (city === "") {
-      toast({
-        title: "Invalid Values .",
-        description: "Ingrese a city valid.",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Invalid Values", "Ingrese una ciudad valida");
       setIsLoading(false);
       return false;
     }
     if (province === "") {
-      toast({
-        title: "Invalid Values .",
-        description: "Ingrese a province valid.",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Invalid Values", "Ingrese una provincia valida");
       setIsLoading(false);
       return false;
     }
     if (age === "") {
-      toast({
-        title: "Invalid Values .",
-        description: "Ingrese an age valid.",
-        status: "error",
-        duration: 2000,
-        position: "top-left",
-        isClosable: true,
-      });
+      error("Invalid Values", "Ingrese una edad valida");
       setIsLoading(false);
       return false;
     }
@@ -123,7 +73,7 @@ function Register() {
     setIsLoading(true);
     if (!validatePasswordAndEmail()) return;
     const formData = getValues();
-    registerAuth(formData, setIsLoading)
+    registerAuth(formData, setIsLoading);
   };
 
   return (
