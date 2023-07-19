@@ -7,14 +7,13 @@ import { AxiosResponse } from "axios";
 export const useAuth = () => {
   const toast = useToast();
   const navigate = useNavigate();
-  const { setUser, setFlatFetch } = useApp();
+  const { setUser } = useApp();
   const login = async (
     formData: any,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>> | null,
     googleSignIn: AxiosResponse<any, any> | null = null
   ) => {
     try {
-      setFlatFetch(false);
       let response = googleSignIn
         ? googleSignIn
         : await apiClient.post("/login", formData);
@@ -65,7 +64,6 @@ export const useAuth = () => {
 
   const logout = () => {
     setUser(null);
-    setFlatFetch(false);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/");
@@ -84,7 +82,6 @@ export const useAuth = () => {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     try {
-      setFlatFetch(false);
       const response = await apiClient.post("/users", {
         ...formData,
         role: "USER",

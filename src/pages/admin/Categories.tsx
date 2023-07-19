@@ -29,9 +29,10 @@ import { CategoryCard } from "../../components/CategoryCard";
 import { createFormData } from "../../utils/validators";
 import { useToastResponses } from "../../hook/useToastResponses";
 import { createNewCategory } from "../../api/category.api";
+import { updateCategoriesRX } from "../../helpers/subjectsRx.helper";
 
 export default function Categories() {
-  const { categories, setChangeCategory, changeCategory } = useApp();
+  const { categories } = useApp();
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit, register, getValues, reset } = useForm();
@@ -59,7 +60,7 @@ export default function Categories() {
       if (!response.data.ok) throw new Error("err");
       success(`${response.data.body.name} categoria creada Exitomasamente`);
       setIsLoading(false);
-      setChangeCategory(!changeCategory);
+      updateCategoriesRX.setSubject(true);
       onClose();
     } catch (errorFromCatch) {
       error("Error de Servidor");

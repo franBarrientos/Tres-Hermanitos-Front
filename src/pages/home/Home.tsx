@@ -13,6 +13,7 @@ import { ProductInterface } from "../../interfaces/product";
 import ModalHistory from "./ModalHistory";
 import { useState, useEffect } from "react";
 import { Paginacion } from "../../components/Paginacion";
+import { modalesRX } from "../../helpers/subjectsRx.helper";
 interface props {
   isAdmin?: boolean;
 }
@@ -21,7 +22,8 @@ export default function Home({ isAdmin = false }: props) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [isLoadingFetch, setIsLoadingFetch] = useState<boolean>(false);
-  const { actualCategory, spinnerPayMercadoP } = useApp();
+  const { actualCategory } = useApp();
+  const [spinnerPayMercadoP, setSpinnerPayMercadoP] = useState<boolean>(false);
 
   const fetcher = async (url: string) => {
     const response = await apiClient(url);
@@ -37,6 +39,18 @@ export default function Home({ isAdmin = false }: props) {
       refreshInterval: 1000,
     }
   );
+
+  useEffect(() => {
+    modalesRX.getSubject.subscribe(([value, data]) => {
+      if (value == "mercadopago-spinner") {
+        if (data) {
+          setSpinnerPayMercadoP(true);
+        } else {
+          setSpinnerPayMercadoP(false);
+        }
+      }
+    });
+  }, []);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -87,11 +101,7 @@ export default function Home({ isAdmin = false }: props) {
         <Text fontSize={"2xl"} my={8} color={"ly.400"}>
           Elija y Personalize su pedido
         </Text>
-        <SimpleGrid
-          gap={5}
-          justifyContent={"center"}
-          columns={[1, 1, 2, 2, 3]}
-        >
+        <SimpleGrid gap={5} justifyContent={"center"} columns={[1, 1, 2, 2, 3]}>
           {productos.map((producto: ProductInterface) => (
             <Producto producto={producto} key={producto.id} isAdmin={isAdmin} />
           ))}
@@ -106,6 +116,7 @@ export default function Home({ isAdmin = false }: props) {
         />
       </Flex>
       <ModalHistory />
+
       {spinnerPayMercadoP && (
         <CircularProgress
           isIndeterminate

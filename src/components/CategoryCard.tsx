@@ -22,7 +22,6 @@ import {
 } from "@chakra-ui/react";
 import { CategoryInterface } from "../interfaces/category";
 import React, { useEffect, useState } from "react";
-import useApp from "../hook/useApp";
 import {
   createFormData,
   getDifferentFields,
@@ -30,6 +29,7 @@ import {
 } from "../utils/validators";
 import { useToastResponses } from "../hook/useToastResponses";
 import { updateCategory } from "../api/category.api";
+import { updateCategoriesRX } from "../helpers/subjectsRx.helper";
 
 type props = {
   category: CategoryInterface;
@@ -46,7 +46,7 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
     img?: string | File;
   }>({ name: category.name, img: category.img });
   const { error, success, warning } = useToastResponses();
-  const { setChangeCategory, changeCategory } = useApp();
+  
 
   useEffect(() => {
     if (!isOpen1) {
@@ -90,7 +90,7 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
     try {
       const response = await updateCategory(formDataa, category.id);
       if (!response.data.ok) throw new Error("err");
-      setChangeCategory(!changeCategory);
+      updateCategoriesRX.setSubject(true)
       success("Cambios guardados correctamente");
       onClose1();
       setIsLoading(false);
