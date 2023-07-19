@@ -1,6 +1,6 @@
 import { Subject } from "rxjs";
 
-export class SubscribeManagerRx {
+export class SubscribeManagerRx<T> {
 
     private  subject = new Subject();
 
@@ -8,7 +8,7 @@ export class SubscribeManagerRx {
         return this.subject.asObservable();
     }
 
-    public setSubject(value:[string, boolean]){
+    public setSubject(value:T){
         this.subject.next(value)
     }
 

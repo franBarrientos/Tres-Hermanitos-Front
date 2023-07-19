@@ -16,26 +16,22 @@ import { createOrderMp, createPurchase } from "../api/purchase.api";
 import { createPurchasesProducts } from "../api/purchaseProduct";
 import { Navigate } from "react-router-dom";
 import apiClient from "../config/axiosClient";
-import { modalesRX } from "../helpers/subjectsRx.helper";
+import { modalesRX, updateCategoriesRX } from "../helpers/subjectsRx.helper";
+
 interface MyContextType {
   categories: CategoryInterface[] | null;
-  setCategories: Dispatch<SetStateAction<CategoryInterface[] | null>>;
   actualCategory: CategoryInterface;
-  setActualCategory: (categoryToUpdate: CategoryInterface) => void;
   handleClickCategory: (id: number) => void;
   carrito: ProductInterface[] | null;
-  setCarrito: Dispatch<SetStateAction<ProductInterface[] | []>>;
   handleAddToCarrito: (product: ProductInterface) => void;
   pay: (payment: string, customerId: number) => void;
-  user: UserDto | null;
-  setUser: Dispatch<SetStateAction<UserDto | null>>;
   handleEditProductOfCarrito: (id: number, newQuantity: number) => void;
   handleRemoveProductFromCarrito: (id: number) => void;
+  user: UserDto | null;
+  setUser: Dispatch<SetStateAction<UserDto | null>>;
   featureAdmin: CategoryInterface | undefined;
   handleClickCategoryAdmin: (id: number) => void;
   categoriesAdmin: CategoryInterface[];
-  setChangeCategory: Dispatch<SetStateAction<boolean>>;
-  changeCategory: boolean;
   totalCarrito: () => number;
   openHistory: boolean;
   setOpenHistory: Dispatch<SetStateAction<boolean>>;
@@ -88,12 +84,11 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   const [featureAdmin, setFeatureAdmin] = useState<CategoryInterface>(
     categoriesAdmin[0]
   );
-  const [changeCategory, setChangeCategory] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
   const [flatFetch, setFlatFetch] = useState<boolean>(false);
   const [spinnerPayMercadoP, setSpinnerPayMercadoP] = useState<boolean>(false);
   const toast = useToast();
-
+    const subscribe = updateCategoriesRX.getSubject
   const fetchCategories = async () => {
     try {
       const response = await getAllCategories();
@@ -107,7 +102,15 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
 
   useEffect(() => {
     fetchCategories();
-  }, [changeCategory]);
+  }, []);
+
+  useEffect(()=>{
+    subscribe.subscribe((data)=>{
+      if(data){
+        fetchCategories()
+      }
+    })
+  })
 
   useEffect(() => {
     const userStringify = localStorage.getItem("user");
@@ -275,12 +278,9 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
 
   const contextValue: MyContextType = {
     categories,
-    setCategories,
     actualCategory,
-    setActualCategory,
     handleClickCategory,
     carrito,
-    setCarrito,
     handleAddToCarrito,
     pay,
     setUser,
@@ -290,8 +290,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     featureAdmin,
     categoriesAdmin,
     handleClickCategoryAdmin,
-    setChangeCategory,
-    changeCategory,
     totalCarrito,
     openHistory,
     setOpenHistory,
