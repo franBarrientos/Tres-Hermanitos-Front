@@ -1,11 +1,11 @@
-import { useToast } from "@chakra-ui/react";
 import apiClient from "../config/axiosClient";
 import { useNavigate } from "react-router-dom";
 import useApp from "./useApp";
 import { AxiosResponse } from "axios";
+import { useToastResponses } from "./useToastResponses";
 
 export const useAuth = () => {
-  const toast = useToast();
+  const { success, error, warning } = useToastResponses();
   const navigate = useNavigate();
   const { setUser } = useApp();
   const login = async (
@@ -20,45 +20,30 @@ export const useAuth = () => {
       const { data } = response;
       if (!data.ok) throw new Error("err");
       if (data.body.user.role == "USER") {
-        toast({
-          title: `Bienvenido ${data.body.user.firstName}!!`,
-          description: "Inicio de sesion exitoso",
-          status: "success",
-          duration: 2000,
-          position: "top-left",
-          isClosable: true,
-        });
+        success(
+          `Bienvenido ${data.body.user.firstName}!!`,
+          "Inicio de sesion exitoso"
+        );
         localStorage.setItem("token", data.body.token);
         localStorage.setItem("user", JSON.stringify(data.body.user));
         setUser(data.body.user);
         if (setIsLoading) setIsLoading(false);
         navigate("/");
       } else {
-        toast({
-          title: `Bienvenido ${data.body.user.firstName}`,
-          description: "Inicio de sesion exitoso",
-          status: "success",
-          duration: 2000,
-          position: "top-left",
-          isClosable: true,
-        });
+        success(
+          `Bienvenido ${data.body.user.firstName}`,
+          "Inicio de sesion exitoso"
+        );
         localStorage.setItem("token", data.body.token);
         localStorage.setItem("user", JSON.stringify(data.body.user));
         setUser(data.body.user);
         if (setIsLoading) setIsLoading(false);
         navigate("/admin");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (errorFromCatch) {
+      console.log(errorFromCatch);
       if (setIsLoading) setIsLoading(false);
-      toast({
-        title: "Valores Incorrecto.",
-        description: "Por favor ingrese valores validos",
-        status: "error",
-        position: "top-left",
-        duration: 2000,
-        isClosable: true,
-      });
+      error("Valores Incorrecto.", "Por favor ingrese valores validos");
     }
   };
 
@@ -67,14 +52,7 @@ export const useAuth = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/");
-    toast({
-      title: `Sesion cerrada`,
-      description: "Vuelve Pronto!",
-      status: "warning",
-      duration: 2000,
-      position: "top-left",
-      isClosable: true,
-    });
+    warning(`Sesion cerrada`, "Vuelve Pronto!");
   };
 
   const register = async (
@@ -88,31 +66,20 @@ export const useAuth = () => {
       });
       const { data } = response;
       if (data.ok == true) {
-        toast({
-          title: `Bienvenido ${data.body.user.firstName}`,
-          description: "Inicio de sesion exitoso",
-          status: "success",
-          duration: 2000,
-          position: "top-left",
-          isClosable: true,
-        });
+        success(
+          `Bienvenido ${data.body.user.firstName}`,
+          "Inicio de sesion exitoso"
+        );
         localStorage.setItem("token", data.body.token);
         localStorage.setItem("user", data.body.user);
         setUser(data.body.user);
         setIsLoading(false);
         navigate("/");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (errorFromCatch) {
+      console.log(errorFromCatch);
       setIsLoading(false);
-      toast({
-        title: "Valores Incorrecto.",
-        description: "Por favor ingrese valores validos",
-        status: "error",
-        position: "top-left",
-        duration: 2000,
-        isClosable: true,
-      });
+      error("Valores Incorrecto.", "Por favor ingrese valores validos");
     }
   };
 
