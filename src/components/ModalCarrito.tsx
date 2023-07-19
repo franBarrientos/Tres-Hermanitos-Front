@@ -7,15 +7,30 @@ import {
   ModalFooter,
   Button,
   Text,
-  Box
+  Box,
 } from "@chakra-ui/react";
 import useApp from "../hook/useApp";
 import ProductResumen from "./ProductResumen";
 import PayButton from "./PayButton";
 import { ProductInterface } from "../interfaces/product";
+import { useState, useEffect } from "react";
+import { modalesRX } from "../helpers/subjectsRx.helper";
 
 export default function ModalCarrito() {
-  const { isOpenModal, setIsOpenModal, carrito } = useApp();
+  const { carrito } = useApp();
+  const [isOpenRx, setIsOpenRx] = useState<boolean>(false);
+
+  const subscription = modalesRX.getSubject;
+  useEffect(() => {
+    subscription.subscribe((data:any) => {
+      const [objeto, value] = data;
+      if (objeto=="carrito" && !value) {
+        setIsOpenRx(false);
+      } else {
+        (objeto=="carrito" && setIsOpenRx(true));
+      }
+    });
+  });
 
   const totalCarrito = () => {
     if (carrito)
@@ -27,7 +42,7 @@ export default function ModalCarrito() {
     return 0;
   };
   return (
-    <Modal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)}>
+    <Modal isOpen={isOpenRx} onClose={() => setIsOpenRx(false)}>
       <ModalOverlay />
       <ModalContent bg={"ly.800"}>
         <ModalCloseButton />
@@ -44,7 +59,12 @@ export default function ModalCarrito() {
             </Text>
           </Box>
           {carrito!.length == 0 ? (
-            <Text fontSize={"xl"} textAlign={"center"} fontWeight={"semibold"} color={"ly.700"}>
+            <Text
+              fontSize={"xl"}
+              textAlign={"center"}
+              fontWeight={"semibold"}
+              color={"ly.700"}
+            >
               Añade algo al carrito
             </Text>
           ) : (
@@ -55,24 +75,19 @@ export default function ModalCarrito() {
         </ModalBody>
 
         {carrito!.length > 0 && (
-           <Text
-           mt={8}
-           fontSize={"2xl"}
-           fontWeight={"bold"}
-           textAlign={"center"}
-           color={"ly.400"}
-         >
-           💵 Total: ${totalCarrito()}
-         </Text>
-          
+          <Text
+            mt={8}
+            fontSize={"2xl"}
+            fontWeight={"bold"}
+            textAlign={"center"}
+            color={"ly.400"}
+          >
+            💵 Total: ${totalCarrito()}
+          </Text>
         )}
 
         <ModalFooter>
-          <Button
-            colorScheme="red"
-            mr={3}
-            onClick={() => setIsOpenModal(false)}
-          >
+          <Button colorScheme="red" mr={3} onClick={() => setIsOpenRx(false)}>
             Cerrar
           </Button>
           {carrito!.length > 0 && <PayButton />}

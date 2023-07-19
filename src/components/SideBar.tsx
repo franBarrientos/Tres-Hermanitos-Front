@@ -17,8 +17,9 @@ import MenuMobile from "./MenuMobile";
 import ModalCarrito from "./ModalCarrito";
 import { useAuth } from "../hook/useAuth";
 import { useNavigate } from "react-router-dom";
+import { modalesRX } from "../helpers/subjectsRx.helper";
 export default function Sidebar() {
-  const { categories, setIsOpenModal, user, setOpenHistory, carrito } =
+  const { categories, user, setOpenHistory, carrito } =
     useApp();
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -127,7 +128,7 @@ export default function Sidebar() {
                   }}
                 >
                   <Button
-                    onClick={() => setIsOpenModal(true)}
+                    onClick={() => modalesRX.setSubject(["carrito", true])}
                     my={0}
                     fontSize={"xl"}
                     fontWeight={"bold"}

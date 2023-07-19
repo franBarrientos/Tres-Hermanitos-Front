@@ -16,18 +16,16 @@ import { createOrderMp, createPurchase } from "../api/purchase.api";
 import { createPurchasesProducts } from "../api/purchaseProduct";
 import { Navigate } from "react-router-dom";
 import apiClient from "../config/axiosClient";
+import { modalesRX } from "../helpers/subjectsRx.helper";
 interface MyContextType {
   categories: CategoryInterface[] | null;
   setCategories: Dispatch<SetStateAction<CategoryInterface[] | null>>;
-
-  setActualCategory: (categoryToUpdate: CategoryInterface) => void;
   actualCategory: CategoryInterface;
+  setActualCategory: (categoryToUpdate: CategoryInterface) => void;
   handleClickCategory: (id: number) => void;
   carrito: ProductInterface[] | null;
   setCarrito: Dispatch<SetStateAction<ProductInterface[] | []>>;
   handleAddToCarrito: (product: ProductInterface) => void;
-  isOpenModal: boolean;
-  setIsOpenModal: Dispatch<SetStateAction<boolean>>;
   pay: (payment: string, customerId: number) => void;
   user: UserDto | null;
   setUser: Dispatch<SetStateAction<UserDto | null>>;
@@ -86,7 +84,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     img: "",
     name: "",
   });
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [user, setUser] = useState<UserDto | null>(null);
   const [featureAdmin, setFeatureAdmin] = useState<CategoryInterface>(
     categoriesAdmin[0]
@@ -249,7 +246,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
             duration: 2000,
             isClosable: true,
           });
-          setIsOpenModal(false);
+          modalesRX.setSubject(["carrito", false]);
           return;
         })
         .catch(() => {
@@ -285,8 +282,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     carrito,
     setCarrito,
     handleAddToCarrito,
-    isOpenModal,
-    setIsOpenModal,
     pay,
     setUser,
     user,
