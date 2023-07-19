@@ -1,17 +1,13 @@
 import { Subject } from "rxjs";
 
 export class SubscribeManagerRx<T> {
+  private subject = new Subject<T>();
 
-    private  subject = new Subject();
+  public get getSubject() {
+    return this.subject.asObservable();
+  }
 
-    public get getSubject(){
-        return this.subject.asObservable();
-    }
-
-    public setSubject(value:T){
-        this.subject.next(value)
-    }
-
-
+  public setSubject(value: T) {
+    this.subject.next(value);
+  }
 }
-

@@ -33,14 +33,7 @@ interface MyContextType {
   handleClickCategoryAdmin: (id: number) => void;
   categoriesAdmin: CategoryInterface[];
   totalCarrito: () => number;
-  openHistory: boolean;
-  setOpenHistory: Dispatch<SetStateAction<boolean>>;
-  flatFetch: boolean;
-  setFlatFetch: Dispatch<SetStateAction<boolean>>;
-  spinnerPayMercadoP: boolean;
 }
-
-
 
 export const AppContext = createContext<MyContextType>({} as MyContextType);
 
@@ -71,7 +64,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
       id: 1,
       img: "https://res.cloudinary.com/dacgvqpeg/image/upload/w_1000,ar_1:1,c_fill,g_auto,f_webp/v1688648111/3309960_synkq9.png",
       name: "Estadisticas",
-    }
+    },
   ];
   const [categories, setCategories] = useState<CategoryInterface[] | null>([]);
   const [carrito, setCarrito] = useState<ProductInterface[] | []>([]);
@@ -84,11 +77,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   const [featureAdmin, setFeatureAdmin] = useState<CategoryInterface>(
     categoriesAdmin[0]
   );
-  const [openHistory, setOpenHistory] = useState(false);
-  const [flatFetch, setFlatFetch] = useState<boolean>(false);
-  const [spinnerPayMercadoP, setSpinnerPayMercadoP] = useState<boolean>(false);
   const toast = useToast();
-    const subscribe = updateCategoriesRX.getSubject
+  const subscribe = updateCategoriesRX.getSubject;
   const fetchCategories = async () => {
     try {
       const response = await getAllCategories();
@@ -104,13 +94,13 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     fetchCategories();
   }, []);
 
-  useEffect(()=>{
-    subscribe.subscribe((data)=>{
-      if(data){
-        fetchCategories()
+  useEffect(() => {
+    subscribe.subscribe((data) => {
+      if (data) {
+        fetchCategories();
       }
-    })
-  })
+    });
+  }, []);
 
   useEffect(() => {
     const userStringify = localStorage.getItem("user");
@@ -218,10 +208,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   };
 
   const pay = async (payment: string, customerId: number) => {
-    setSpinnerPayMercadoP(true);
-    setTimeout(() => {
-      setSpinnerPayMercadoP(false)
-    }, 2000);
+    modalesRX.setSubject(["mercadopago-spinner", true]);
     try {
       const response = await createPurchase({
         state: "pendiente",
@@ -230,7 +217,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
       });
       if (!response.data.ok) throw new Error("err");
       if (payment == "MP") payMercadoPago(response.data.body.id);
-      setFlatFetch(false);
       Promise.all(
         carrito.map((product) => {
           return createPurchasesProducts({
@@ -256,7 +242,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           throw new Error("err");
         });
     } catch (error) {
-      setSpinnerPayMercadoP(false)
+      modalesRX.setSubject(["mercadopago-spinner", false]);
       toast({
         title: "Error de server",
         status: "error",
@@ -274,8 +260,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     setFeatureAdmin(category);
   };
 
-  
-
   const contextValue: MyContextType = {
     categories,
     actualCategory,
@@ -291,11 +275,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     categoriesAdmin,
     handleClickCategoryAdmin,
     totalCarrito,
-    openHistory,
-    setOpenHistory,
-    flatFetch,
-    setFlatFetch,
-    spinnerPayMercadoP,
   };
 
   return (

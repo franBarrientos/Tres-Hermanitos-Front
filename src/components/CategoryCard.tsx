@@ -22,7 +22,6 @@ import {
 } from "@chakra-ui/react";
 import { CategoryInterface } from "../interfaces/category";
 import React, { useEffect, useState } from "react";
-import useApp from "../hook/useApp";
 import {
   createFormData,
   getDifferentFields,

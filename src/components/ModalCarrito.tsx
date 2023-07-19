@@ -22,15 +22,14 @@ export default function ModalCarrito() {
 
   const subscription = modalesRX.getSubject;
   useEffect(() => {
-    subscription.subscribe((data:any) => {
-      const [objeto, value] = data;
+    subscription.subscribe(([objeto, value]) => {
       if (objeto=="carrito" && !value) {
         setIsOpenRx(false);
       } else {
         (objeto=="carrito" && setIsOpenRx(true));
       }
     });
-  });
+  }, []);
 
   const totalCarrito = () => {
     if (carrito)
