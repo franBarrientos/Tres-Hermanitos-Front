@@ -29,13 +29,14 @@ import Home from "../home/Home";
 import { useToastResponses } from "../../hook/useToastResponses";
 import { createFormData } from "../../utils/validators";
 import { createNewProduct } from "../../api/product.api";
+import { SearchProductButton} from "../../components/SearchProductButton"
 
 export default function Products() {
   const { categories, handleClickCategory } = useApp();
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
-  const { handleSubmit, register, getValues, reset} = useForm();
+  const { handleSubmit, register, getValues, reset } = useForm();
   const { error, success } = useToastResponses();
 
   const validateProduct = () => {
@@ -82,16 +83,15 @@ export default function Products() {
       reset();
       const response = await createNewProduct(formData);
       if (!response.data.ok) throw new Error("err");
-      success(`${response.data.body.name} creado correctamente`)
+      success(`${response.data.body.name} creado correctamente`);
       setIsLoading(false);
       onClose();
     } catch (errorFromCatch) {
-      console.log(errorFromCatch)
-      error("Error de Servidor")
+      console.log(errorFromCatch);
+      error("Error de Servidor");
       setIsLoading(false);
     }
   };
-  
 
   return (
     <>
@@ -114,34 +114,37 @@ export default function Products() {
           </Button>
         </Flex>
       ) : (
-        <Tabs position="relative" variant="unstyled">
-          <TabList gap={2}>
-            <Button
-              onClick={onOpen}
-              _hover={{ bgColor: "orange.400" }}
-              bgColor={"orange.300"}
-              rounded={"md"}
-            >
-              Crear Nuevo Producto
-            </Button>
-            {categories?.map((category) => (
-              <Tab
-                fontSize={"lg"}
-                p={2}
-                color={"ly.700"}
-                onClick={() => handleClickCategory(category.id)}
+        <Flex w={"full"}>
+          <Tabs position="relative" variant="unstyled" flex={3}>
+            <TabList gap={2}>
+              <Button
+                onClick={onOpen}
+                _hover={{ bgColor: "orange.400" }}
+                bgColor={"orange.300"}
+                rounded={"md"}
               >
-                {category.name}
-              </Tab>
-            ))}
-          </TabList>
-          <TabIndicator
-            mt="-1.5px"
-            height="4px"
-            bg="orange.300"
-            borderRadius="1px"
-          />
-        </Tabs>
+                Crear Nuevo Producto
+              </Button>
+              {categories?.map((category) => (
+                <Tab
+                  fontSize={"lg"}
+                  p={2}
+                  color={"ly.700"}
+                  onClick={() => handleClickCategory(category.id)}
+                >
+                  {category.name}
+                </Tab>
+              ))}
+            </TabList >
+            <TabIndicator
+              mt="-1.5px"
+              height="4px"
+              bg="orange.300"
+              borderRadius="1px"
+            />
+          </Tabs>
+          <SearchProductButton />
+        </Flex>
       )}
       <Home isAdmin={true} />
       <Modal isOpen={isOpen} onClose={onClose}>
