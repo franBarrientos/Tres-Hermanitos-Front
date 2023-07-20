@@ -14,7 +14,7 @@ import ModalHistory from "./ModalHistory";
 import { useState, useEffect } from "react";
 import { Paginacion } from "../../components/Paginacion";
 import { modalesRX } from "../../helpers/subjectsRx.helper";
-
+import { SearchProductButton} from "../../components/SearchProductButton"
 interface props {
   isAdmin?: boolean;
 }
@@ -102,9 +102,13 @@ export default function Home({ isAdmin = false }: props) {
             {actualCategory?.name}
           </Text>
         </Box>
-        <Text fontSize={"2xl"} my={8} color={"ly.400"}>
+        <Flex mb={5} w={"full"} direction={["column","column","column","column", "row"]}>
+        <Text flex={4} pl={{xl:80}} textAlign={"center"} fontSize={"2xl"} my={8} color={"ly.400"}>
           Elija y Personalize su pedido
         </Text>
+        <SearchProductButton/>
+
+        </Flex>
         <SimpleGrid gap={5} justifyContent={"center"} columns={[1, 1, 2, 2, 3]}>
           {productos.map((producto: ProductInterface) => (
             <Producto producto={producto} key={producto.id} isAdmin={isAdmin} />

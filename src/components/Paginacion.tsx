@@ -5,7 +5,8 @@ type props = {
   setIsLoadingFetch: React.Dispatch<React.SetStateAction<boolean>>;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  totalPages:number
+  totalPages:number,
+  forceFetch?:() => Promise<void>
 };
 
 export const Paginacion: React.FC<props> = ({
@@ -13,8 +14,10 @@ export const Paginacion: React.FC<props> = ({
   setIsLoadingFetch,
   currentPage,
   setCurrentPage,
-  totalPages
+  totalPages,
+  forceFetch
 }) => {
+  
   return isLoadingFetch ? (
     <Flex my={5} justifyContent={"center"}>
       <CircularProgress isIndeterminate color="green.300" />
@@ -31,6 +34,7 @@ export const Paginacion: React.FC<props> = ({
         onClick={() => {
           setIsLoadingFetch(true);
           setCurrentPage(currentPage - 1);
+          (forceFetch && forceFetch())
         }}
       >
         Anterior
@@ -44,6 +48,8 @@ export const Paginacion: React.FC<props> = ({
         onClick={() => {
           setIsLoadingFetch(true);
           setCurrentPage(currentPage + 1);
+          (forceFetch && forceFetch())
+
         }}
         isDisabled={currentPage === totalPages}
       >
