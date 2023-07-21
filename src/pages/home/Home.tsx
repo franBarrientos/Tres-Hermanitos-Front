@@ -1,4 +1,4 @@
-import useSWR, { SWRResponse } from "swr";
+import useSWR from "swr";
 import apiClient from "../../config/axiosClient";
 import useApp from "../../hook/useApp";
 import {
@@ -28,6 +28,9 @@ export default function Home({ isAdmin = false }: props) {
   const { actualCategory } = useApp();
   const [spinnerPayMercadoP, setSpinnerPayMercadoP] = useState<boolean>(false);
 
+  const generateUrlWithPagination = (): string =>
+  `/product?skip=${currentPage}&&category=${actualCategory?.id}`;
+
   const fetcher = async (url: string) => {
     const response = await apiClient(url);
     setIsLoadingFetch(false);
@@ -35,8 +38,8 @@ export default function Home({ isAdmin = false }: props) {
     return response.data;
   };
 
-  const { data, isLoading, error }: SWRResponse = useSWR(
-    `/product?skip=${currentPage}&&category=${actualCategory?.id}`,
+  const { data, isLoading, error } = useSWR(
+    generateUrlWithPagination(),
     fetcher,
     {
       refreshInterval: 1000,
@@ -59,6 +62,8 @@ export default function Home({ isAdmin = false }: props) {
     setCurrentPage(1);
   }, [actualCategory]);
 
+
+
   if (isLoading) {
     return (
       <CircularProgress
@@ -76,7 +81,7 @@ export default function Home({ isAdmin = false }: props) {
   if (error)
     return (
       <Text color="ly.700" textAlign={"center"} fontSize={"2xl"}>
-        Ups! Algo ocurrio en el servidor...
+        Ups! Algo ocurrio en el servidor... o No hay aun Productos
       </Text>
     );
   const productos: ProductInterface[] = data?.body?.products || [];
