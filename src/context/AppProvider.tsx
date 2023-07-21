@@ -236,6 +236,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
             isClosable: true,
           });
           modalesRX.setSubject(["carrito", false]);
+          modalesRX.setSubject(["mercadopago-spinner", false]);
           return;
         })
         .catch(() => {
