@@ -207,6 +207,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     window.location.replace(response.data.body.urlMercadoPago);
   };
   const goToWpp = (nroPurchase:number) => {
+    const userLocalStorage = JSON.parse(localStorage.getItem("user")!)
+    const address = userLocalStorage.customer.addres? userLocalStorage.customer.addres : " "
     const numeroWhatsApp = import.meta.env.VITE_WPP;
     const mensaje: string = `
       ¡Hola Cami 😊!
@@ -217,12 +219,12 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
         return ` ✅${product.name} Cantidad:${product.quantity}\n`;
       }).join('')}
       El total del pedido fue de $${totalCarrito()}    
-      Mi dirección es - ${user?.customer?.addres}
+      Mi dirección es - ${address}
       Espero el precio del envio...
     `;
     const enlaceWhatsApp = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(
       mensaje
-    )}`;
+    )}&type=phone_number`;
     window.open(enlaceWhatsApp, "_blank");
   };
   const pay = async (payment: string, customerId: number) => {
@@ -235,7 +237,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
       });
       if (!response.data.ok) throw new Error("err");
       if (payment == "MP") payMercadoPago(response.data.body.id);
-      /* if (payment == "CASH") */ goToWpp(response.data.body.id);
+      if (payment == "CASH") goToWpp(response.data.body.id);
       Promise.all(
         carrito.map((product) => {
           return createPurchasesProducts({

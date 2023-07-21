@@ -62,10 +62,10 @@ export default function PayButton() {
         });
 
         if (response.data.ok) {
-          setIsLoading(false);
-          pay(payment, Number(response.data.body.id));
           setUser({ ...user!, customer: response.data.body });
           localStorage.setItem("user", JSON.stringify({ ...user!, customer: response.data.body }))
+          setIsLoading(false);
+          pay(payment, Number(response.data.body.id));
         } else {
           throw new Error("Coudn't create customer");
         }

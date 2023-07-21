@@ -8,7 +8,7 @@ const WhatsappButton = () => {
     const mensaje = "¡Hola Cami 😊! Muy lindas las joyas, necesito ayuda en ..";
     const enlaceWhatsApp = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(
       mensaje
-    )}`;
+    )}&type=phone_number`;
     window.open(enlaceWhatsApp, "_blank");
   };
   return (
