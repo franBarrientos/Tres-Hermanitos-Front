@@ -22,10 +22,9 @@ export default function ModalHistory() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [purchases, setPurchases] = useState<PurchaseInterface[] | null>(null);
   const observable = modalesRX.getSubject;
-
   const fetchPurchases = async () => {
     try {
-      const { data } = await getPurchasesByCustomer(user?.customer?.id!)
+      const { data } = await getPurchasesByCustomer(user?.customer?.id ? user?.customer?.id : 999);
       setPurchases(data.body);
     } catch (error) {
       setOpenHistory(false);
@@ -35,7 +34,7 @@ export default function ModalHistory() {
   };
 
   useEffect(() => {
-    observable.subscribe(([objeto, value]) => {
+    const subscription = observable.subscribe(([objeto, value]) => {
       if (objeto == "history" && value) {
         console.log("data");
         setOpenHistory(true);
@@ -45,44 +44,46 @@ export default function ModalHistory() {
         objeto == "history" && setOpenHistory(false);
       }
     });
-  }, []);
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [user]);
 
   return (
-      <>
-        <Modal isOpen={openHistory} onClose={() => setOpenHistory(false)}>
-          <ModalOverlay />
-          <ModalContent
-            maxH={"90%"}
-            overflowY={"scroll"}
-            bg={"ly.900"}
-            color={"ly.700"}
-          >
-            <ModalHeader>🛍 Compras 🛍</ModalHeader>
-            <ModalCloseButton />
-            {isLoading ? (
-              <Flex mt={4} justifyContent={"center"} alignItems={"center"}>
-                <CircularProgress isIndeterminate color="green.300" />
-              </Flex>
-            ) : (
-              <ModalBody>
-                {purchases?.map((purchase) => {
-                  return <CardHistory key={purchase.id} {...purchase} />;
-                })}
-              </ModalBody>
-            )}
+    <>
+      <Modal isOpen={openHistory} onClose={() => setOpenHistory(false)}>
+        <ModalOverlay />
+        <ModalContent
+          maxH={"90%"}
+          overflowY={"scroll"}
+          bg={"ly.900"}
+          color={"ly.700"}
+        >
+          <ModalHeader>🛍 Compras 🛍</ModalHeader>
+          <ModalCloseButton />
+          {isLoading ? (
+            <Flex mt={4} justifyContent={"center"} alignItems={"center"}>
+              <CircularProgress isIndeterminate color="green.300" />
+            </Flex>
+          ) : (
+            <ModalBody>
+              {purchases?.map((purchase) => {
+                return <CardHistory key={purchase.id} {...purchase} />;
+              })}
+            </ModalBody>
+          )}
 
-            <ModalFooter>
-              <Button
-                colorScheme="red"
-                mr={3}
-                onClick={() => setOpenHistory(false)}
-              >
-                Cerrar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    )
-  
+          <ModalFooter>
+            <Button
+              colorScheme="red"
+              mr={3}
+              onClick={() => setOpenHistory(false)}
+            >
+              Cerrar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
 }
