@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import { Paginacion } from "../../components/Paginacion";
 import { modalesRX } from "../../helpers/subjectsRx.helper";
 import { SearchProductButton} from "../../components/SearchProductButton"
+import WhatsappButton from "../../components/WhatsappButton";
 interface props {
   isAdmin?: boolean;
 }
@@ -128,6 +129,7 @@ export default function Home({ isAdmin = false }: props) {
           totalPages={totalPages}
         />
       </Flex>
+      <WhatsappButton />
       <ModalHistory />
 
       {spinnerPayMercadoP && (
