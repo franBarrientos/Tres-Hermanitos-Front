@@ -29,6 +29,7 @@ export const CardPurchaseAdmin:React.FC<props> = ({purchase}) => {
       <CardHeader display={"flex"} flexDirection={"column"} gap={1}>
         <Heading size="md">Cliente: {purchase.customer.user.firstName}</Heading>
         <Heading size="md">Dni: {purchase.customer.dni}</Heading>
+        <Heading size="sm">Direccion: {purchase.customer.addres}</Heading>
         <Heading size="sm">Correo: {purchase.customer.user.email}</Heading>
         <Heading size="md">
           Estado de Compra:{" "}
