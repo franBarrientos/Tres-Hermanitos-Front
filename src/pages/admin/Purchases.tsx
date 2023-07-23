@@ -4,8 +4,6 @@ import apiClient from "../../config/axiosClient";
 import {  useState } from "react";
 import { Paginacion } from "../../components/Paginacion";
 import { CardPurchaseAdmin } from "../../components/CardPurchaseAdmin";
-import { SearchPurchasestButton } from "../../components/SearchPurchasesButton";
-
 export const Purchases = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
