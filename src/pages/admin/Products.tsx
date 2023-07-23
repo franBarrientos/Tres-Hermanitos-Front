@@ -29,7 +29,6 @@ import Home from "../home/Home";
 import { useToastResponses } from "../../hook/useToastResponses";
 import { createFormData } from "../../utils/validators";
 import { createNewProduct } from "../../api/product.api";
-import { SearchProductButton} from "../../components/SearchProductButton"
 
 export default function Products() {
   const { categories, handleClickCategory } = useApp();
