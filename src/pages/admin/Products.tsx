@@ -143,7 +143,7 @@ export default function Products() {
               borderRadius="1px"
             />
           </Tabs>
-          <SearchProductButton />
+          
         </Flex>
       )}
       <Home isAdmin={true} />
