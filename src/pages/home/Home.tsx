@@ -112,7 +112,7 @@ export default function Home({ isAdmin = false }: props) {
         <Text flex={4} pl={{xl:80}} textAlign={"center"} fontSize={"2xl"} my={8} color={"ly.400"}>
           Elija y Personalize su pedido
         </Text>
-        <SearchProductButton/>
+        <SearchProductButton isAdmin={isAdmin}/>
 
         </Flex>
         <SimpleGrid gap={5} justifyContent={"center"} columns={[1, 1, 2, 2, 3]}>
