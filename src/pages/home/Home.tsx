@@ -16,6 +16,7 @@ import { Paginacion } from "../../components/Paginacion";
 import { modalesRX } from "../../helpers/subjectsRx.helper";
 import { SearchProductButton} from "../../components/SearchProductButton"
 import WhatsappButton from "../../components/WhatsappButton";
+import { InstagramButton } from "../../components/InstagramButton";
 interface props {
   isAdmin?: boolean;
 }
@@ -130,6 +131,7 @@ export default function Home({ isAdmin = false }: props) {
         />
       </Flex>
       <WhatsappButton />
+      <InstagramButton />
       <ModalHistory />
 
       {spinnerPayMercadoP && (

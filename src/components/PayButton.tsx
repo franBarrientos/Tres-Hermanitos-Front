@@ -56,14 +56,25 @@ export default function PayButton() {
       (formData.dni = Number(formData.dni))
     ) {
       try {
-        const response = await apiClient.post("/customer", {
-          ...formData,
-          user: user?.id,
-        });
+        const response = await apiClient.post(
+          "/customer",
+          {
+            ...formData,
+            user: user?.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
         if (response.data.ok) {
           setUser({ ...user!, customer: response.data.body });
-          localStorage.setItem("user", JSON.stringify({ ...user!, customer: response.data.body }))
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ ...user!, customer: response.data.body })
+          );
           setIsLoading(false);
           pay(payment, Number(response.data.body.id));
         } else {
@@ -223,13 +234,13 @@ export default function PayButton() {
                 </Flex>
               ) : (
                 <Flex gap={2}>
-                <Button type="submit"  colorScheme="blue" width={"full"}>
-                  Confirmar
-                </Button>
-                   <Button colorScheme="red" onClick={onClose1}>
-                   Cerrar
-                 </Button>
-                 </Flex>
+                  <Button type="submit" colorScheme="blue" width={"full"}>
+                    Confirmar
+                  </Button>
+                  <Button colorScheme="red" onClick={onClose1}>
+                    Cerrar
+                  </Button>
+                </Flex>
               )}
             </form>
           </AlertDialogBody>
