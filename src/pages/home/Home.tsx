@@ -100,7 +100,12 @@ export default function Home({ isAdmin = false }: props) {
           px={3}
           bg={"ly.300"}
         >
-          <Text fontSize={"4xl"} fontWeight={"bold"} shadow={"2xl"}>
+          <Text
+            fontFamily={"-moz-initial"}
+            fontSize={"4xl"}
+            fontWeight={"bold"}
+            shadow={"2xl"}
+          >
             {actualCategory?.name}
           </Text>
         </Box>

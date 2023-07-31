@@ -41,7 +41,7 @@ export default function Categoria({ category, isAdmin = false }: props) {
           : "ly.800"
       }
     >
-      <Img rounded={"full"} w={"12"} src={category.img}></Img>
+      <Img rounded={"full"} w={"12"} height={"14"}  src={category.img}></Img>
       <Text fontSize="lg" fontWeight={"semibold"}>
         {" "}
         {category.name}{" "}

@@ -9,7 +9,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 const colors = {
   ly: {
     900: "#FAF3F0",
-    800: "#F8E8EE",
+    800: "#eef1f8",
     700: "#273453",
     600: "#F1D6AB",
     500: "#F8F8F8",

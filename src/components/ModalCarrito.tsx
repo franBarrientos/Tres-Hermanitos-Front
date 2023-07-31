@@ -23,10 +23,10 @@ export default function ModalCarrito() {
   const subscription = modalesRX.getSubject;
   useEffect(() => {
     subscription.subscribe(([objeto, value]) => {
-      if (objeto=="carrito" && !value) {
+      if (objeto == "carrito" && !value) {
         setIsOpenRx(false);
       } else {
-        (objeto=="carrito" && setIsOpenRx(true));
+        objeto == "carrito" && setIsOpenRx(true);
       }
     });
   }, []);
@@ -47,7 +47,7 @@ export default function ModalCarrito() {
         <ModalCloseButton />
         <ModalBody my={4}>
           <Box
-            boxShadow="0px 4px 10px rgba(254, 189, 87, 0.5)"
+            boxShadow="0px 4px 10px rgb(255, 202, 204)"
             display="inline-block"
             rounded={"2xl"}
             p={2}
@@ -79,7 +79,7 @@ export default function ModalCarrito() {
             fontSize={"2xl"}
             fontWeight={"bold"}
             textAlign={"center"}
-            color={"ly.400"}
+            color={"ly.700"}
           >
             💵 Total: ${totalCarrito()}
           </Text>
