@@ -126,7 +126,8 @@ export default function PayButton() {
         }}
         my={5}
         p={5}
-        backgroundColor="blue.500"
+        bg={"ly.700"}
+        _hover={{ backgroundColor: "blue.500", cursor: "pointer" }}
         color="white"
         fontWeight={"semibold"}
         variant="outline"

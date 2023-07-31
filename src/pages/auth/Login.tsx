@@ -41,7 +41,7 @@ function App() {
     const password: string = getValues("password").toString().trim();
 
     if (email === "") {
-      error("Valores Invalidos",  "Ingrese un email"), setIsLoading(false);
+      error("Valores Invalidos", "Ingrese un email"), setIsLoading(false);
       return false;
     }
 
@@ -69,7 +69,7 @@ function App() {
       px={{ base: 8, md: 12 }}
       mb={8}
       bg={"ly.800"}
-      color={"ly.400"}
+      color={"ly.700"}
       borderRadius="md"
       boxShadow="md"
     >
@@ -89,6 +89,7 @@ function App() {
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
+            bg="white"
             _placeholder={{ color: "gray.400" }}
           />
         </FormControl>
@@ -101,6 +102,7 @@ function App() {
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
+            bg="white"
             _placeholder={{ color: "gray.400" }}
           />
         </FormControl>

@@ -62,12 +62,12 @@ export const SearchProductButton = ({isAdmin = false}:props) => {
         <form onSubmit={handleSubmit}>
           <Flex justifyContent={"center"} alignItems={"center"} gap={1}>
             <Input
-              color={"ly.400"}
+            bg={"white"}
               type={"text"}
               ref={name}
-              placeholder={"Ej: Cadena de oro"}
+              placeholder={"Ej: Chocolate"}
             />
-            <Button type="submit" /* onClick={handleSubmit} */>
+            <Button bg={"ly.300"} type="submit" /* onClick={handleSubmit} */>
               <Search2Icon />
             </Button>
           </Flex>

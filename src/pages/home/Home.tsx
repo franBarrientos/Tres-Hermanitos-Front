@@ -14,14 +14,12 @@ import ModalHistory from "./ModalHistory";
 import { useState, useEffect } from "react";
 import { Paginacion } from "../../components/Paginacion";
 import { modalesRX } from "../../helpers/subjectsRx.helper";
-import { SearchProductButton} from "../../components/SearchProductButton"
+import { SearchProductButton } from "../../components/SearchProductButton";
 import WhatsappButton from "../../components/WhatsappButton";
 import { InstagramButton } from "../../components/InstagramButton";
 interface props {
   isAdmin?: boolean;
 }
-
-
 
 export default function Home({ isAdmin = false }: props) {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -31,7 +29,7 @@ export default function Home({ isAdmin = false }: props) {
   const [spinnerPayMercadoP, setSpinnerPayMercadoP] = useState<boolean>(false);
 
   const generateUrlWithPagination = (): string =>
-  `/product?skip=${currentPage}&&category=${actualCategory?.id}`;
+    `/product?skip=${currentPage}&&category=${actualCategory?.id}`;
 
   const fetcher = async (url: string) => {
     const response = await apiClient(url);
@@ -64,8 +62,6 @@ export default function Home({ isAdmin = false }: props) {
     setCurrentPage(1);
   }, [actualCategory]);
 
-
-
   if (isLoading) {
     return (
       <CircularProgress
@@ -74,7 +70,6 @@ export default function Home({ isAdmin = false }: props) {
         size="120px"
         position="absolute"
         top="50%"
-  
         left="50%"
         transform="translate(-50%, -50%)"
       />
@@ -99,22 +94,32 @@ export default function Home({ isAdmin = false }: props) {
         justifyContent={"space-between"}
       >
         <Box
-          boxShadow="0px 4px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
+          boxShadow="0px 4px 10px rgb(255, 202, 204)"
           display="inline-block"
           rounded={"2xl"}
-          py={2}
           px={3}
+          bg={"ly.300"}
         >
           <Text fontSize={"4xl"} fontWeight={"bold"} shadow={"2xl"}>
             {actualCategory?.name}
           </Text>
         </Box>
-        <Flex mb={5} w={"full"} direction={["column","column","column","column", "row"]}>
-        <Text flex={4} pl={{xl:80}} textAlign={"center"} fontSize={"2xl"} my={8} color={"ly.400"}>
-          Elija y Personalize su pedido
-        </Text>
-        <SearchProductButton isAdmin={isAdmin}/>
-
+        <Flex
+          mb={5}
+          w={"full"}
+          direction={["column", "column", "column", "column", "row"]}
+        >
+          <Text
+            flex={4}
+            pl={{ xl: 80 }}
+            textAlign={"center"}
+            fontSize={"2xl"}
+            my={8}
+            color={"ly.700"}
+          >
+            Elija y Personalize su pedido 🍭
+          </Text>
+          <SearchProductButton isAdmin={isAdmin} />
         </Flex>
         <SimpleGrid gap={5} justifyContent={"center"} columns={[1, 1, 2, 2, 3]}>
           {productos.map((producto: ProductInterface) => (

@@ -62,7 +62,7 @@ export default function Sidebar() {
               <Flex w={"full"} my={2} gap={5}>
                 <Box>
                   <Menu>
-                    <MenuButton as={Button} bg={"ly.400"}>
+                    <MenuButton as={Button} bg={"ly.300"}>
                       <Flex gap={1}>
                         <Text fontSize={"xl"}>Yo</Text>
                         <Img src="me.svg" width={6} height={6}></Img>

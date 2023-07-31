@@ -3,7 +3,7 @@ export default function Footer() {
   return (
     <Flex
       flexDirection={"column"}
-      color={"whiteAlpha.900"}
+      color={"ly.700"}
       fontWeight="semibold"
       align="center"
       justify="center"

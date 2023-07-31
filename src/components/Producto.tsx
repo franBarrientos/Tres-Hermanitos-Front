@@ -149,10 +149,10 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
   return (
     <Card
       maxW="sm"
-      boxShadow="2px 6px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
+      boxShadow="2px 6px 10px rgb(255, 202, 204)" // Sombra con color rojo
       bg={"ly.900"}
     >
-      <CardBody color={"ly.400"}>
+      <CardBody color={"ly.700"}>
         <Image
           src={releaseImgUrl(producto.img)}
           w={400}
@@ -202,8 +202,8 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
           >
             <NumberInput
               size="lg"
-              color={"ly.400"}
-              bg={"ly.800"}
+              color={"ly.700"}
+              bg={"white"}
               maxW={20}
               min={1}
               value={quantity}
@@ -211,13 +211,14 @@ export default function Producto({ producto, isAdmin = false }: productoProp) {
             >
               <NumberInputField />
               <NumberInputStepper>
-                <NumberIncrementStepper color={"ly.400"} />
-                <NumberDecrementStepper color={"ly.400"} />
+                <NumberIncrementStepper color={"ly.700"} />
+                <NumberDecrementStepper color={"ly.700"} />
               </NumberInputStepper>
             </NumberInput>
             <Button
               onClick={() => handleAddToCarrito({ ...producto, quantity })}
               variant="ghost"
+              _hover={{ backgroundColor: "blue.500", cursor: "pointer" }}
               color={"ly.900"}
               bg={"ly.700"}
             >

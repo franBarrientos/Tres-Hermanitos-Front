@@ -86,7 +86,7 @@ function Register() {
       borderRadius="md"
       boxShadow="md"
       bg={"ly.800"}
-      color={"ly.400"}
+      color={"ly.700"}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Heading mb={4}>Registrarme</Heading>
@@ -99,6 +99,7 @@ function Register() {
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
+             bg="white"
             _placeholder={{ color: "gray.400" }}
           />
         </FormControl>
@@ -111,6 +112,7 @@ function Register() {
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
+             bg="white"
             _placeholder={{ color: "gray.400" }}
           />
         </FormControl>
@@ -123,6 +125,7 @@ function Register() {
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
+             bg="white"
             _placeholder={{ color: "gray.400" }}
           />
         </FormControl>
@@ -135,6 +138,7 @@ function Register() {
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
+             bg="white"
             _placeholder={{ color: "gray.400" }}
           />
         </FormControl>
@@ -147,6 +151,7 @@ function Register() {
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
+             bg="white"
             _placeholder={{ color: "gray.400" }}
           />
         </FormControl>
@@ -159,6 +164,7 @@ function Register() {
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
+             bg="white"
             _placeholder={{ color: "gray.400" }}
           />
         </FormControl>
@@ -171,6 +177,7 @@ function Register() {
             focusBorderColor="gray.600"
             borderColor={"whiteAlpha.300"}
             shadow={"xl"}
+             bg="white"
             _placeholder={{ color: "gray.400" }}
           />
         </FormControl>

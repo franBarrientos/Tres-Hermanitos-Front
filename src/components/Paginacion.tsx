@@ -25,9 +25,10 @@ export const Paginacion: React.FC<props> = ({
   ) : (
     <Flex justifyContent={"center"} gap={5} my={20} >
       <Button
+      color={"white"}
         bgColor={"ly.700"}
         _hover={{
-          bg: "ly.800",
+          bg: "blue.500",
           color: "ly.400",
         }}
         isDisabled={currentPage < 2}
@@ -40,9 +41,10 @@ export const Paginacion: React.FC<props> = ({
         Anterior
       </Button>
       <Button
+      color={"white"}
         bgColor={"ly.700"}
         _hover={{
-          bg: "ly.800",
+          bg: "blue.500",
           color: "ly.400",
         }}
         onClick={() => {

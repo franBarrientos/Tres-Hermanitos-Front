@@ -25,7 +25,7 @@ export default function ProductResumen(props: { product: ProductInterface }) {
       mt={2}
       py={2}
       bg={"ly.800"}
-      color={"ly.400"}
+      color={"ly.700"}
     >
       <Image
         objectFit="cover"
@@ -47,7 +47,7 @@ export default function ProductResumen(props: { product: ProductInterface }) {
             variant="solid"
             colorScheme="yellow"
           >
-            <Text fontSize={"md"} color={"ly.900"}>
+            <Text fontSize={"md"} color={"ly.700"}>
 
             Cantidad: {props.product.quantity}
 

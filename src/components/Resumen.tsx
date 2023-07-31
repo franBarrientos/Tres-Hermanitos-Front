@@ -22,11 +22,12 @@ export default function Resumen() {
       color={"ly.700"}
     >
       <Box
-        boxShadow="0px 4px 10px rgba(254, 189, 87, 0.5)"
+        boxShadow="0px 4px 10px rgb(255, 202, 204)"
         display="inline-block"
         rounded={"2xl"}
         p={2}
         mb={5}
+        bg={"ly.300"}
       >
         <Text fontSize={"4xl"} fontWeight={"bold"}>
           🛒 Carrito

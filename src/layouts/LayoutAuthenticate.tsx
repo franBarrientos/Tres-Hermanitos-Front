@@ -15,7 +15,7 @@ export default function LayoutAuthenticate() {
             py={{ base: 3, md: 8 }}
         >
           <Flex flexDirection={{base:"column", md:"row"}}justifyContent={"center"} alignItems={"center"}>
-          <Img src="/logo.webp" w={"auto"} h={"auto"}> 
+          <Img src="/logo.webp" w={{base:"auto", sm:"35%",xl:"20%"}} h={"auto"}> 
           </Img>
           <Outlet />
           </Flex>
