@@ -16,7 +16,7 @@ import { createOrderMp, createPurchase } from "../api/purchase.api";
 import { createPurchasesProducts } from "../api/purchaseProduct";
 import { Navigate } from "react-router-dom";
 import apiClient from "../config/axiosClient";
-import { modalesRX, updateCategoriesRX } from "../helpers/subjectsRx.helper";
+import { modalesRX, showHome, updateCategoriesRX } from "../helpers/subjectsRx.helper";
 
 interface MyContextType {
   categories: CategoryInterface[] | null;
@@ -145,6 +145,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   }, []);
 
   const handleClickCategory = (id: number) => {
+    showHome.setSubject(false)
     const category = categories?.filter((category) => category.id == id)[0];
     setActualCategory(category!);
   };
@@ -276,6 +277,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   };
 
   const handleClickCategoryAdmin = (id: number) => {
+    showHome.setSubject(false)
     const category = categoriesAdmin?.filter(
       (category) => category.id == id
     )[0];

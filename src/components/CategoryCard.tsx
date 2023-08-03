@@ -110,7 +110,7 @@ export const CategoryCard: React.FC<props> = ({ category }) => {
       display={"flex"}
       justifyContent={"center"}
       maxW="sm"
-      boxShadow="2px 6px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
+      boxShadow="2px 6px 10px rgb(255, 202, 204)" // Sombra con color rojo
       bg={"ly.900"}
       color={"ly.700"}
     >

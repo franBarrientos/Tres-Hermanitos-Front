@@ -3,8 +3,27 @@ import Sidebar from "../components/SideBar";
 import Resumen from "../components/Resumen";
 import { Box, Flex } from "@chakra-ui/react";
 import { useMediaQuery } from "react-responsive";
-import "../utils/stylesScroll.css"
+import "../utils/stylesScroll.css";
+import { useEffect, useState } from "react";
+import { showHome } from "../helpers/subjectsRx.helper";
+import HomePrincipal from "../pages/home/HomePrincipal";
 export default function LayoutHome() {
+  const [showHomeS, setShowHomeS] = useState<boolean>(true);
+
+  useEffect(() => {
+    const sub = showHome.getSubject.subscribe((data) => {
+      if (data) {
+        setShowHomeS(true);
+      }else{
+        setShowHomeS(false);
+      }
+    });
+
+    return () => {
+      sub.unsubscribe();
+    };
+  }, [showHomeS]);
+
   const isMobile = useMediaQuery({ maxWidth: 768 });
   return (
     <>
@@ -14,14 +33,8 @@ export default function LayoutHome() {
         h={"100vh"}
       >
         <Sidebar />
-        <Box
-          flex={1}
-          bg={"ly.800"}
-          overflowY={"auto"}
-          p={3}
-          h={"100vh"}
-        >
-          <Outlet />
+        <Box flex={1} bg={"ly.800"} overflowY={"auto"} p={3} h={"100vh"}>
+          {showHomeS ? <HomePrincipal /> : <Outlet />}
         </Box>
         {isMobile ? null : <Resumen />}
       </Flex>

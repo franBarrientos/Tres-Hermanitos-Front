@@ -108,7 +108,7 @@ export default function Categories() {
 
       <Flex justifyContent={"center"}>
         <Box
-          boxShadow="0px 4px 10px rgba(254, 189, 87, 0.5)" // Sombra con color rojo
+          boxShadow="0px 4px 10px rgb(255, 202, 204)" // Sombra con color rojo
           display="inline-block"
           rounded={"2xl"}
           py={2}
@@ -125,7 +125,7 @@ export default function Categories() {
         textAlign={"center"}
         fontSize={"2xl"}
         my={8}
-        color={"ly.400"}
+        color={"ly.700"}
       >
         Edita tus Categorias
       </Text>

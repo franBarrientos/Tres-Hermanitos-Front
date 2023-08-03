@@ -19,8 +19,7 @@ import { useAuth } from "../hook/useAuth";
 import { useNavigate } from "react-router-dom";
 import { modalesRX } from "../helpers/subjectsRx.helper";
 export default function Sidebar() {
-  const { categories, user, carrito } =
-    useApp();
+  const { categories, user, carrito } = useApp();
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const { logout } = useAuth();
@@ -164,7 +163,24 @@ export default function Sidebar() {
               {user?.firstName?.toUpperCase()}
             </Text>
           </Text>
-          <Flex maxHeight={{base:"40vh", "2xl":"50vh"}} overflowY={"auto"} direction={"column"} alignItems={"center"} justifyContent={"flex-start"} gap={2}>
+          <Flex
+            maxHeight={{ base: "40vh", "2xl": "50vh" }}
+            overflowY={"auto"}
+            direction={"column"}
+            alignItems={"center"}
+            justifyContent={"flex-start"}
+            gap={2}
+          >
+            <Categoria
+              category={{
+                id: 2,
+                img: "https://res.cloudinary.com/dkkd5eszg/image/upload/v1690886936/GRG55_ESTRELLAS-GIGANTES-DE-MAR-DE-CHUCHE_fhipuw.jpg",
+                name: "Inicio",
+              }}
+              key={1}
+              isHome={true}
+            />
+
             {categories?.map((categoria) => (
               <Categoria category={categoria} key={categoria.id} />
             ))}

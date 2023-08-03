@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Menu,
   MenuButton,
@@ -26,8 +25,8 @@ export default function MenuMobile({ isAdmin = false }: props) {
 
   return (
     <Menu>
-      <MenuButton as={Button} rightIcon={<ChevronDownIcon />} bg={"ly.300"} fontSize={"xl"}>
-        {isAdmin ? "Menu" : " Categorias "}
+      <MenuButton as={Button} bg={"ly.300"} fontSize={{base:"l", md:"xl"}}>
+        {isAdmin ? "Menu" : " Productos "}
       </MenuButton>
       <MenuList>
         {!isAdmin

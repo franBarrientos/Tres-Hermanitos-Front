@@ -65,7 +65,7 @@ export const SearchProductButton = ({isAdmin = false}:props) => {
             bg={"white"}
               type={"text"}
               ref={name}
-              placeholder={"Ej: Chocolate"}
+              placeholder={"¿Que estas buscando? Ej: Chocolate"}
             />
             <Button bg={"ly.300"} type="submit" /* onClick={handleSubmit} */>
               <Search2Icon />

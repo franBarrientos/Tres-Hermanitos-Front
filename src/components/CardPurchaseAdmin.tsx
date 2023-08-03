@@ -24,13 +24,13 @@ export const CardPurchaseAdmin:React.FC<props> = ({purchase}) => {
       alignItems={"flex-start"}
       bg={"ly.900"}
       p={2}
-      color={"ly.400"}
+      color={"ly.700"}
     >
       <CardHeader display={"flex"} flexDirection={"column"} gap={1}>
-        <Heading size="md">Cliente: {purchase.customer.user.firstName}</Heading>
-        <Heading size="md">Dni: {purchase.customer.dni}</Heading>
-        <Heading size="sm">Direccion: {purchase.customer.addres}</Heading>
-        <Heading size="sm">Correo: {purchase.customer.user.email}</Heading>
+        <Heading size="md">Cliente: {purchase.customer?.user?.firstName}</Heading>
+        <Heading size="md">Dni: {purchase.customer?.dni}</Heading>
+        <Heading size="sm">Direccion: {purchase.customer?.addres}</Heading>
+        <Heading size="sm">Correo: {purchase.customer?.user?.email}</Heading>
         <Heading size="md">
           Estado de Compra:{" "}
           {purchase.state == "paid" ? "Pagado" : purchase.state}
@@ -48,7 +48,7 @@ export const CardPurchaseAdmin:React.FC<props> = ({purchase}) => {
                 <ListItem pr={2}>
                   <Flex justifyContent={"flex-start"}>
                     <ListIcon as={CheckIcon} color="green.500" />
-                    <Text color={"ly.400"}>
+                    <Text color={"ly.700"}>
                       {product.product.name}
                       <span>{product.quantity} </span>
                     </Text>

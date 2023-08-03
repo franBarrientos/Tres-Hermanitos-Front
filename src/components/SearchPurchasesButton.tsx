@@ -55,9 +55,9 @@ export const SearchPurchasestButton = () => {
       <Box>
         <form onSubmit={handleSubmit}>
           <Flex justifyContent={"center"} alignItems={"center"} gap={1}>
-            <FormLabel color={"ly.400"}>Nombre, Dni o Email</FormLabel>
+            <FormLabel color={"ly.700"}>Nombre, Dni o Email</FormLabel>
             <Input
-              color={"ly.400"}
+              color={"ly.700"}
               type={"text"}
               ref={name}
               placeholder={"Ej: Franco barrientos"}

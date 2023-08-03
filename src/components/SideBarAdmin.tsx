@@ -22,10 +22,7 @@ export default function SideBarAdmin() {
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
 
   return (
-    <Flex flexDirection={"column"} 
-    w={["full", "full", "56", "60"]}
-
-    >
+    <Flex flexDirection={"column"} w={["full", "full", "56", "60"]}>
       {isMobile ? (
         <>
           <Flex justifyContent={"space-evenly"} alignItems={"flex-start"}>
@@ -40,22 +37,17 @@ export default function SideBarAdmin() {
                 mt={2}
                 ml={1}
                 mb={1}
-                
               >
                 Hola!{" "}
-                <Text
-                  fontWeight={"bold"}
-                  display={"inline"}
-                  color={"orange.400"}
-                >
-                  {user?.firstName?.toUpperCase()}
-                </Text>
+              </Text>
+              <Text fontWeight={"bold"} display={"inline"} color={"orange.400"}>
+                {user?.firstName?.toUpperCase()}
               </Text>
 
               <Flex w={"full"} justifyContent={"space-between"} my={2} gap={5}>
                 <Box>
                   <Menu>
-                    <MenuButton as={Button}>
+                    <MenuButton as={Button} bg={"ly.300"}>
                       <Img src="me.svg" w={6}></Img>
                     </MenuButton>
                     <MenuList>
@@ -85,7 +77,6 @@ export default function SideBarAdmin() {
             bgClip="text"
             fontSize={["2xl", "3xl"]}
             color={"ly.700"}
-
             fontWeight="semibold"
             textAlign={"center"}
             mb={4}
