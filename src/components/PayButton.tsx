@@ -132,7 +132,7 @@ export default function PayButton() {
         fontWeight={"semibold"}
         variant="outline"
       >
-        Pagar
+        Confirmar pedido
       </Button>
       <AlertDialog
         leastDestructiveRef={cancelRef}
@@ -224,7 +224,10 @@ export default function PayButton() {
                       colorScheme={payment === "CASH" ? "blue" : "gray"}
                       onClick={() => setPayment("CASH")}
                     >
-                      💵 Efectivo
+                      <Flex direction={"column"}>
+                        <Text>💵 Efectivo</Text>
+                        <Text> Al recibir el pedido</Text>
+                      </Flex>
                     </Button>
                   </Flex>
                 </FormControl>
@@ -286,7 +289,10 @@ export default function PayButton() {
                     colorScheme={payment === "CASH" ? "blue" : "gray"}
                     onClick={() => setPayment("CASH")}
                   >
-                    💵 Efectivo
+                    <Flex direction={"column"}>
+                      <Text>💵 Efectivo</Text>
+                      <Text> Al recibir el pedido</Text>
+                    </Flex>{" "}
                   </Button>
                 </Flex>
               </FormControl>
