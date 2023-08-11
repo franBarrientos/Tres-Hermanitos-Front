@@ -35,7 +35,7 @@ export default function LayoutHome() {
         <Sidebar />
         <Box flex={1} bg={"ly.800"} overflowY={"auto"} p={0} h={"100vh"}>
           <Flex justifyContent={"center"} alignItems={"center"} p={1} bg={"ly.300"} mb={1}> 
-              Compra minima $10.000 Envio gratis
+              Compra minima $5.000 Envio gratis
           </Flex>
           {showHomeS ? <HomePrincipal /> : <Outlet />}
         </Box>
