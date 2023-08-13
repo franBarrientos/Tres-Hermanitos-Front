@@ -43,6 +43,11 @@ export default function PayButton() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, register, getValues } = useForm();
+  const {
+    handleSubmit: handleSubmit1,
+    register: register1,
+    getValues: getValues1,
+  } = useForm();
   const [payment, setPayment] = useState<"MP" | "CASH">("MP");
 
   const onSubmit = async () => {
@@ -109,6 +114,71 @@ export default function PayButton() {
     onClose2();
   };
 
+  const validatePasswordAndEmail = () => {
+    const email: string = getValues1("email").toString().trim();
+    const password: string = getValues1("password").toString().trim();
+    if (email === "") {
+      toast({
+        title: "Ingrese un email valido",
+        status: "error",
+        duration: 1000,
+        position: "top-left",
+        isClosable: true,
+      });
+
+      setIsLoading(false);
+      return false;
+    }
+
+    if (password === "") {
+      toast({
+        title: "Ingrese una contraseña valida",
+        status: "error",
+        duration: 1000,
+        position: "top-left",
+        isClosable: true,
+      });
+      setIsLoading(false);
+      return false;
+    }
+    return true;
+  };
+
+
+  
+  const onSubmitWithoutAccount = async () => {
+    setIsLoading(true);
+    if (!validatePasswordAndEmail()) return;
+    const formData = getValues1();
+    console.log(formData)
+      try {
+        const response = await apiClient.post("/users", {
+          ...formData,
+        });
+        const { data } = response;
+        if (data.ok == true) {
+          localStorage.setItem("token", data.body.token);
+          localStorage.setItem("user", data.body.user);
+          setUser(data.body.user);
+          setIsLoading(false);
+        }
+        onOpen1()
+      } catch (errorFromCatch) {
+        console.log(errorFromCatch);
+        setIsLoading(false);
+        toast({
+          title: "Ya tienes una cuenta por favor ingrese con su cuenta..",
+          status: "warning",
+          duration: 1500,
+          position: "top-left",
+          isClosable: true,
+        });
+        navigate("/auth/login");
+      }
+      onClose()
+    };
+  
+
   return (
     <>
       <Button
@@ -144,17 +214,60 @@ export default function PayButton() {
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>Inicia Sesion Para Comprar</AlertDialogHeader>
+          <AlertDialogHeader>
+            Ingrese los siguiente datos para confirmar orden
+          </AlertDialogHeader>
           <AlertDialogCloseButton />
-          <AlertDialogBody>Para comprar inicia sesion antes</AlertDialogBody>
+          <AlertDialogBody>
+            <form>
+              <FormControl>
+                <FormLabel>Nombre y Apellido</FormLabel>
+                <Input
+                  {...register1("firstName")}
+                  type="text"
+                  placeholder="Tu Nombre y apellido"
+                  focusBorderColor="gray.600"
+                  borderColor={"whiteAlpha.300"}
+                  shadow={"xl"}
+                  _placeholder={{ color: "gray.400" }}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  {...register1("email")}
+                  type="email"
+                  placeholder="Tu Email"
+                  focusBorderColor="gray.600"
+                  borderColor={"whiteAlpha.300"}
+                  shadow={"xl"}
+                  bg="white"
+                  _placeholder={{ color: "gray.400" }}
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Contraseña</FormLabel>
+                <Input
+                  {...register1("password")}
+                  type="password"
+                  placeholder="Tu Contraseña"
+                  focusBorderColor="gray.600"
+                  borderColor={"whiteAlpha.300"}
+                  shadow={"xl"}
+                  bg="white"
+                  _placeholder={{ color: "gray.400" }}
+                />
+              </FormControl>
+            </form>
+          </AlertDialogBody>
           <AlertDialogFooter>
             <Button onClick={onClose}>No</Button>
             <Button
-              onClick={() => navigate("/auth/login")}
+              onClick={handleSubmit1(onSubmitWithoutAccount)}
               colorScheme="blue"
               ml={3}
             >
-              Iniciar Sesion
+              Confirmar
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

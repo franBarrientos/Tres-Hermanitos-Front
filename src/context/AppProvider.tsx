@@ -212,7 +212,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     const address = userLocalStorage.customer.addres? userLocalStorage.customer.addres : " "
     const numeroWhatsApp = import.meta.env.VITE_WPP;
     const mensaje: string = `
-      ¡Hola Cami 😊!
+      ¡Hola Tres Hermanitos😊🍭!
       Confirmo la compra *${nroPurchase}*
       Este fue mi pedido...
       ${[null,...carrito].map((product) => {
