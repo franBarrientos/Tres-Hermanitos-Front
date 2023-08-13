@@ -26,7 +26,7 @@ export const CardHistory: React.FC<PurchaseInterface> = ({
         overflow="hidden"
         variant="outline"
         bg={"ly.800"}
-        color={"ly.400"}
+        color={"ly.700"}
       >
         <Stack>
           <CardBody>
